@@ -1,0 +1,23 @@
+server:
+  port: 8080
+  name: prodPanel
+
+#自定义参数
+demoprop:
+  name: ${server.name}
+  sex: ${random.int[0,1]}
+
+spring:
+    datasource:
+        url: jdbc:sqlserver://localhost:1433;DatabaseName=seerbigdata
+        username: sa
+        password : root
+info:
+  service-info: production panel service
+  api-doc: /swagger-ui.html
+swagger:
+  basePath: com.seer.panel
+  title: 车间生产线看板的API信息
+  description: API信息有疑问请联系相关开发人员
+  contact: ligw
+  version: @project.version@
