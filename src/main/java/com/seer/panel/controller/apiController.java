@@ -2,7 +2,7 @@
  * Company
  * Copyright (C) 2004-2018 All Rights Reserved.
  */
-package com.seer.panel.api.controller;
+package com.seer.panel.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

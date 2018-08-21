@@ -2,10 +2,10 @@
  * Company
  * Copyright (C) 2004-2018 All Rights Reserved.
  */
-package com.seer.panel.api;
+package com.seer.panel.test;
 
 import com.seer.panel.Application;
-import com.seer.panel.api.controller.apiController;
+import com.seer.panel.controller.apiController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
