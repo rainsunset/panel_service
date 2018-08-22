@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seer.panel.dao.ProductionplanDao">
+
+    <insert id="addProductionplan" parameterType="com.seer.panel.bean.Productionplan">
+        INSERT INTO productionplan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            record_id,
+                <if test="userId != null">
+                    user_id,
+                </if>
+                <if test="num != null">
+                    num,
+                </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{productionplanId},
+                <if test="userId != null">
+                    #{userId},
+                </if>
+                <if test="num != null">
+                    #{num},
+                </if>
+        </trim>
+    </insert>
+
+    <update id="updateProductionplanById" parameterType="com.seer.panel.bean.Productionplan">
+        update productionplan
+        <trim prefix="set" suffixOverrides=",">
+                <if test="userId != null">
+                    user_id =#{userId},
+                </if>
+                <if test="num != null">
+                    num =#{num},
+                </if>
+        </trim>
+        where record_id = #{productionplanId}
+    </update>
+
+    <select id="selectProductionplanList" parameterType="java.util.Map"
+            resultType="java.util.Map">
+        select
+            user_id userId,
+            num num,
+        record_id productionplanId
+        from productionplan
+        WHERE
+        1=1
+        <if test="productionplanId != null">
+            and record_id = #{productionplanId}
+        </if>
+        <if test="userId != null">
+            and user_id like #{userId}
+        </if>
+        <if test="num != null">
+            and num = #{num}
+        </if>
+        ORDER BY record_id ASC
+    </select>
+
+    <delete id="delProductionplanById" parameterType="java.lang.Integer">
+        DELETE FROM  productionplan
+        where
+        record_id = #{productionplanId}
+    </delete>
+
+</mapper>

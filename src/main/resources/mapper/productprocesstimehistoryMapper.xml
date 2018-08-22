@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seer.panel.dao.ProductprocesstimehistoryDao">
+
+    <insert id="addProductprocesstimehistory" parameterType="com.seer.panel.bean.Productprocesstimehistory">
+        INSERT INTO productprocesstimehistory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            record_id,
+                <if test="userId != null">
+                    user_id,
+                </if>
+                <if test="num != null">
+                    num,
+                </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{productprocesstimehistoryId},
+                <if test="userId != null">
+                    #{userId},
+                </if>
+                <if test="num != null">
+                    #{num},
+                </if>
+        </trim>
+    </insert>
+
+    <update id="updateProductprocesstimehistoryById" parameterType="com.seer.panel.bean.Productprocesstimehistory">
+        update productprocesstimehistory
+        <trim prefix="set" suffixOverrides=",">
+                <if test="userId != null">
+                    user_id =#{userId},
+                </if>
+                <if test="num != null">
+                    num =#{num},
+                </if>
+        </trim>
+        where record_id = #{productprocesstimehistoryId}
+    </update>
+
+    <select id="selectProductprocesstimehistoryList" parameterType="java.util.Map"
+            resultType="java.util.Map">
+        select
+            user_id userId,
+            num num,
+        record_id productprocesstimehistoryId
+        from productprocesstimehistory
+        WHERE
+        1=1
+        <if test="productprocesstimehistoryId != null">
+            and record_id = #{productprocesstimehistoryId}
+        </if>
+        <if test="userId != null">
+            and user_id like #{userId}
+        </if>
+        <if test="num != null">
+            and num = #{num}
+        </if>
+        ORDER BY record_id ASC
+    </select>
+
+    <delete id="delProductprocesstimehistoryById" parameterType="java.lang.Integer">
+        DELETE FROM  productprocesstimehistory
+        where
+        record_id = #{productprocesstimehistoryId}
+    </delete>
+
+</mapper>

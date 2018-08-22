@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seer.panel.dao.KnifechangerhistoryDao">
+
+    <insert id="addKnifechangerhistory" parameterType="com.seer.panel.bean.Knifechangerhistory">
+        INSERT INTO knifechangerhistory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            record_id,
+                <if test="userId != null">
+                    user_id,
+                </if>
+                <if test="num != null">
+                    num,
+                </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{knifechangerhistoryId},
+                <if test="userId != null">
+                    #{userId},
+                </if>
+                <if test="num != null">
+                    #{num},
+                </if>
+        </trim>
+    </insert>
+
+    <update id="updateKnifechangerhistoryById" parameterType="com.seer.panel.bean.Knifechangerhistory">
+        update knifechangerhistory
+        <trim prefix="set" suffixOverrides=",">
+                <if test="userId != null">
+                    user_id =#{userId},
+                </if>
+                <if test="num != null">
+                    num =#{num},
+                </if>
+        </trim>
+        where record_id = #{knifechangerhistoryId}
+    </update>
+
+    <select id="selectKnifechangerhistoryList" parameterType="java.util.Map"
+            resultType="java.util.Map">
+        select
+            user_id userId,
+            num num,
+        record_id knifechangerhistoryId
+        from knifechangerhistory
+        WHERE
+        1=1
+        <if test="knifechangerhistoryId != null">
+            and record_id = #{knifechangerhistoryId}
+        </if>
+        <if test="userId != null">
+            and user_id like #{userId}
+        </if>
+        <if test="num != null">
+            and num = #{num}
+        </if>
+        ORDER BY record_id ASC
+    </select>
+
+    <delete id="delKnifechangerhistoryById" parameterType="java.lang.Integer">
+        DELETE FROM  knifechangerhistory
+        where
+        record_id = #{knifechangerhistoryId}
+    </delete>
+
+</mapper>
