@@ -11,8 +11,6 @@ import com.seer.panel.view.RestResultGenerator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,15 +88,13 @@ public class AcquisitioncardController extends BaseController {
 
     @ApiOperation("更新 采集卡信息")
     @RequestMapping(value = "/acquisitioncard/{acquisitioncardId}", method = RequestMethod.PUT)
-    public JsonResult<Object> updateAcquisitioncardById(
+    public ResponseResult<String> updateAcquisitioncardById(
             @ApiParam(value = "111111 (必传参数)") @PathVariable Integer  acquisitioncardId,
              @ApiParam(value = "userId (非必传参数)") @RequestParam(required = false) String userId,
              @ApiParam(value = "num (非必传参数)") @RequestParam(required = false) Integer num
             ) throws Exception {
-        JsonResult<Object> result = new JsonResult<Object>();
         Acquisitioncard acquisitioncard = new Acquisitioncard();
-        acquisitioncard.setAcquisitioncardId(acquisitioncardId);
-
+        acquisitioncard.setAcquisitioncard(acquisitioncardId);
          if (StringUtil.isNotEmpty(userId)) {
             acquisitioncard.setUserId(userId);
          }
@@ -107,30 +103,24 @@ public class AcquisitioncardController extends BaseController {
          }
         //acquisitioncard.setModifiedDate(new Date());
         acquisitioncardService.updateAcquisitioncardById(acquisitioncard);
-        result.setCode(ResultCode.SUCCESS.getCode());
-        return result;
+        return RestResultGenerator.genResult("sucess");
     }
 
     @ApiOperation("删除 采集卡信息")
     @RequestMapping(value = "/acquisitioncard/{acquisitioncardId}", method = RequestMethod.DELETE)
-    public JsonResult<Object> delAcquisitioncardById(
+    public ResponseResult<String> delAcquisitioncardById(
              @ApiParam(value = "111111 (必传参数)") @PathVariable Integer  acquisitioncardId
             ) throws Exception {
-        JsonResult<Object> result = new JsonResult<Object>();
         acquisitioncardService.delAcquisitioncardById(acquisitioncardId);
-        result.setCode(ResultCode.SUCCESS.getCode());
-        return result;
+        return RestResultGenerator.genResult("sucess");
     }
 
     @ApiOperation("查询 采集卡信息")
     @RequestMapping(value = "/acquisitioncard/{acquisitioncardId}", method = RequestMethod.GET)
-    public JsonResult<Map<String, Object>> getAcquisitioncardById(
+    public ResponseResult<Acquisitioncard> getAcquisitioncardById(
             @ApiParam(value = "111111 (必传参数)") @PathVariable Integer  acquisitioncardId) throws Exception {
-        JsonResult<Map<String, Object>> result = new JsonResult<Map<String, Object>>();
         Map<String, Object> rs = new HashMap<String, Object>();
-        result.setObj(acquisitioncardService.getAcquisitioncardById(acquisitioncardId));
-        result.setCode(ResultCode.SUCCESS.getCode());
-        return result;
+        return RestResultGenerator.genResult(acquisitioncardService.getAcquisitioncardById(acquisitioncardId));
     }
 }
 
