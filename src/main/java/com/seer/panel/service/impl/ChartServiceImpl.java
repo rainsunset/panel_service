@@ -17,12 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 /**
  * @autheor ligw
  * @date 2018/8/23 21:11
  */
+@Service
 public class ChartServiceImpl extends BaseService implements ChartService {
 
   @Autowired
@@ -70,36 +72,36 @@ public class ChartServiceImpl extends BaseService implements ChartService {
   public List<MachineLifencyWarningReportVO> getMachineLifencyWarningReport(ProductLineDTO productLine)
       throws Exception {
     List<MachineLifencyWarningReportVO> machineLifencyWarningReportVOList = null;
+    List<KnifeLifencyWarningReport> knifeLifencyWarningReportList = null;
     try {
-      List<KnifeLifencyWarningReport> knifeLifencyWarningReportList = null;
       knifeLifencyWarningReportList = chartMapper.getKnifeLifencyWarningReport(productLine);
-      if (CollectionUtils.isEmpty(knifeLifencyWarningReportList)){
-        return machineLifencyWarningReportVOList;
-      }
-      // 结果分组
-      Map<String, List<KnifeLifencyWarningReport>> KnifeLifencyWarningReportCollect = new HashMap<>();
-      for (KnifeLifencyWarningReport knifeLifencyWarningReport : knifeLifencyWarningReportList) {
-        String machineName = knifeLifencyWarningReport.getMachineName();
-        List<KnifeLifencyWarningReport> list = KnifeLifencyWarningReportCollect.get(machineName);
-        if (CollectionUtils.isEmpty(list)){
-          list = new ArrayList<KnifeLifencyWarningReport>();
-          list.add(knifeLifencyWarningReport);
-          KnifeLifencyWarningReportCollect.put(machineName, list);
-        } else {
-          list.add(knifeLifencyWarningReport);
-//          KnifeLifencyWarningReportCollect.put(machineName, list);
-        }
-      }
-      //整理分组
-      for (Map.Entry<String, List<KnifeLifencyWarningReport>> entry : KnifeLifencyWarningReportCollect.entrySet()) {
-        MachineLifencyWarningReportVO machineLifencyWarningReportVO = new MachineLifencyWarningReportVO();
-        machineLifencyWarningReportVO.setMachineName(entry.getKey());
-        machineLifencyWarningReportVO.setKnifeLifencyList(entry.getValue());
-        machineLifencyWarningReportVOList.add(machineLifencyWarningReportVO);
-      }
     } catch (Exception e) {
       logger.error(String.format("获取刀具寿命报警信息异常 >>> 异常信息:%S",e.toString()));
       throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
+    }
+    if (CollectionUtils.isEmpty(knifeLifencyWarningReportList)){
+      return machineLifencyWarningReportVOList;
+    }
+    // 结果分组
+    Map<String, List<KnifeLifencyWarningReport>> KnifeLifencyWarningReportCollect = new HashMap<>();
+    for (KnifeLifencyWarningReport knifeLifencyWarningReport : knifeLifencyWarningReportList) {
+      String machineName = knifeLifencyWarningReport.getMachineName();
+      List<KnifeLifencyWarningReport> list = KnifeLifencyWarningReportCollect.get(machineName);
+      if (CollectionUtils.isEmpty(list)){
+        list = new ArrayList<KnifeLifencyWarningReport>();
+        list.add(knifeLifencyWarningReport);
+        KnifeLifencyWarningReportCollect.put(machineName, list);
+      } else {
+        list.add(knifeLifencyWarningReport);
+//          KnifeLifencyWarningReportCollect.put(machineName, list);
+      }
+    }
+    //整理分组
+    for (Map.Entry<String, List<KnifeLifencyWarningReport>> entry : KnifeLifencyWarningReportCollect.entrySet()) {
+      MachineLifencyWarningReportVO machineLifencyWarningReportVO = new MachineLifencyWarningReportVO();
+      machineLifencyWarningReportVO.setMachineName(entry.getKey());
+      machineLifencyWarningReportVO.setKnifeLifencyList(entry.getValue());
+      machineLifencyWarningReportVOList.add(machineLifencyWarningReportVO);
     }
     return machineLifencyWarningReportVOList;
   }

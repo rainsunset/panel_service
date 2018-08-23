@@ -5,6 +5,6 @@ import org.slf4j.LoggerFactory;
 
 public class BaseController {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    public Logger logger = LoggerFactory.getLogger(getClass());
 
 }

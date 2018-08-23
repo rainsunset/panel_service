@@ -12,8 +12,9 @@ public enum GlobalErrorInfoEnum implements ErrorInfoInterface{
 
     //regain
     // 全局系统异常 占用范围-999 -- 1000
+    SUCCESS("0", "success"),
     SYSTEM_ERROR("-100","系统异常") ,
-    PARAME_EXCEPTION("999","参数异常"),
+    PARAME_EXCEPTION("999","参数异常")
     //endregain
 
     ;
