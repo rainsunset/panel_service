@@ -43,14 +43,14 @@ public interface AcquisitioncardService {
 
     /**
      * 依据Id查找 采集卡信息 详情
-     * @param acquisitioncardId
+     * @param acquisitionCardCode
      * @return
      */
-    public Acquisitioncard getAcquisitioncardById(Integer acquisitioncardId);
+    public Acquisitioncard getAcquisitioncardById(String acquisitionCardCode);
 
     /**
      * 依据Id删除 采集卡信息 记录
-     * @param acquisitioncardId
+     * @param acquisitionCardCode
      */
-    public void delAcquisitioncardById(Integer acquisitioncardId);
+    public void delAcquisitioncardById(String acquisitionCardCode);
 }

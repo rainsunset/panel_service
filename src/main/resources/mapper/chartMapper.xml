@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seer.panel.mapper.ChartMapper">
+
+
+   <!--本周机器稼动时长排行  本周机器生产力-->
+   <!--排序 设备名 工作时长(SECOND) 生产量-->
+  <select id="getMachineProductReport" parameterType="com.seer.panel.view.ProductLineDTO"
+    resultType="com.seer.panel.model.MachineProductReport">
+    SELECT ROW_NUMBER() OVER (order by macPSH.macWorkTime DESC) rank ,mac.machineName ,macPSH.macWorkTime ,macPSH.macProdNum
+    FROM machineinfo mac
+    LEFT JOIN(
+      SELECT macSH.machineCode , SUM(datediff(SECOND,macSH.startTime,macSH.endTime)) macWorkTime ,COUNT(1) macProdNum
+      from machinestatushistory macSH
+      WHERE macSH.status = 1 AND macSH.startTime IS NOT NULL AND macSH.endTime IS NOT NULL
+      AND CONVERT(varchar(100),macSH.startTime,23) BETWEEN CONVERT(varchar(100),DATEADD(WEEK,-1, GETDATE()),23) AND CONVERT(varchar(100),GETDATE(), 23)
+      GROUP BY macSH.machineCode
+    ) macPSH ON mac.machineCode = macPSH.machineCode
+    WHERE mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
+    ORDER BY macPSH.macWorkTime DESC
+  </select>
+
+  <!--产线机床信息-->
+  <select id="getProductLineMachineStatusReport" parameterType="com.seer.panel.view.ProductLineDTO"
+    resultType="com.seer.panel.model.ProductLineMachineStatusReport">
+    EXEC up_GetLineMachineStatus @cLine = N#{productionLine}, @cWorksShop = N#{worksShop}
+  </select>
+
+  <!--15min内报警信息-->
+  <select id="getProductLineAlarmReport" parameterType="com.seer.panel.view.ProductLineDTO"
+    resultType="com.seer.panel.model.ProductLineAlarmReport">
+    SELECT mac.machineName ,macPArm.alarmMsg ,macPArm.knifeNum ,macPArm.occurrenceTime
+    FROM machineinfo mac
+    INNER JOIN(
+      select macArm.machineCode ,macArm.alarmMsg ,macArm.knifeNum ,MIN(macArm.occurrenceTime) occurrenceTime
+      FROM machinealarmhistory macArm
+      WHERE ASCII(macArm.alarmMsg) > 0
+      AND macArm.occurrenceTime BETWEEN DATEADD(MINUTE, -15, GETDATE()) AND GETDATE()
+      GROUP BY macArm.machineCode ,macArm.alarmMsg ,macArm.knifeNum
+    ) macPArm ON mac.machineCode = macPArm.machineCode
+    WHERE mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
+    ORDER BY macPArm.occurrenceTime DESC;
+  </select>
+
+  <!--刀具寿命预警-->
+  <select id="getKnifeLifencyWarningReport" parameterType="com.seer.panel.view.ProductLineDTO"
+    resultType="com.seer.panel.model.KnifeLifencyWarningReport">
+    SELECT mac.machineName ,macKni.knifePosition ,macKni.totalCount ,macKni.currentLife
+    FROM machineinfo mac
+    INNER JOIN(
+      SELECT kni.machineCode ,kni.knifePosition ,kni.totalCount ,kniL.currentLife
+      FROM knifeinfo kni
+      LEFT JOIN knifelife kniL ON kniL.machineCode = kni.machineCode AND kniL.knifeNum = kni.knifePosition
+      WHERE kni.status = 1
+    ) macKni ON mac.machineCode = macKni.machineCode
+    WHERE mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
+    ORDER BY macKni.machineCode ,macKni.knifePosition;
+  </select>
+
+
+  <!--月内各刀经断刀频次-->
+  <select id="getKnifeBrokenRepore" parameterType="com.seer.panel.view.ProductLineDTO"
+    resultType="com.seer.panel.model.KnifeBrokenRepore">
+  select
+  mac.machineName ,broH.knifeDiameter ,COUNT(1) as brokenNum
+  from brokenhistory broH with(nolock)
+  join machineinfo mac with(nolock) on mac.machineCode = broH.machineCode
+  where broH.bBroken=1 AND CONVERT(varchar(100),broH.brokenTime,23) BETWEEN CONVERT(varchar(100),DATEADD(MONTH,-1, GETDATE()),23) AND CONVERT(varchar(100),GETDATE(), 23)
+  AND mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
+  group by mac.machineName,broH.knifeDiameter
+  order by mac.machineName,broH.knifeDiameter
+  </select>
+
+
+
+
+</mapper>

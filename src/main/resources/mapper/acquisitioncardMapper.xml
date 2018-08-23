@@ -1,67 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.seer.panel.dao.AcquisitioncardDao">
+<mapper namespace="com.seer.panel.mapper.AcquisitioncardMapper">
 
-    <insert id="addAcquisitioncard" parameterType="com.seer.panel.bean.Acquisitioncard">
+    <insert id="addAcquisitioncard" parameterType="com.seer.panel.model.Acquisitioncard">
         INSERT INTO acquisitioncard
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            record_id,
-                <if test="userId != null">
-                    user_id,
+            acquisitionCardCode,
+                <if test="acquisitionCardName != null">
+                    acquisitionCardName,
                 </if>
-                <if test="num != null">
-                    num,
+                <if test="acquisitionCardModel != null">
+                    acquisitionCardModel,
+                </if>
+                <if test="channelNums != null">
+                    channelNums,
+                </if>
+                <if test="ip != null">
+                    ip,
+                </if>
+                <if test="port != null">
+                    port,
+                </if>
+                <if test="status != null">
+                    status,
+                </if>
+                <if test="creator != null">
+                    creator,
+                </if>
+                <if test="modifier != null">
+                    modifier,
+                </if>
+                <if test="createTime != null">
+                    createTime,
+                </if>
+                <if test="modifyTime != null">
+                    modifyTime,
                 </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            #{acquisitioncardId},
-                <if test="userId != null">
-                    #{userId},
+            #{acquisitionCardCode},
+                <if test="acquisitionCardName != null">
+                    #{acquisitionCardName},
                 </if>
-                <if test="num != null">
-                    #{num},
+                <if test="acquisitionCardModel != null">
+                    #{acquisitionCardModel},
+                </if>
+                <if test="channelNums != null">
+                    #{channelNums},
+                </if>
+                <if test="ip != null">
+                    #{ip},
+                </if>
+                <if test="port != null">
+                    #{port},
+                </if>
+                <if test="status != null">
+                    #{status},
+                </if>
+                <if test="creator != null">
+                    #{creator},
+                </if>
+                <if test="modifier != null">
+                    #{modifier},
+                </if>
+                <if test="createTime != null">
+                    #{createTime},
+                </if>
+                <if test="modifyTime != null">
+                    #{modifyTime},
                 </if>
         </trim>
     </insert>
 
-    <update id="updateAcquisitioncardById" parameterType="com.seer.panel.bean.Acquisitioncard">
+    <update id="updateAcquisitioncardById" parameterType="com.seer.panel.model.Acquisitioncard">
         update acquisitioncard
         <trim prefix="set" suffixOverrides=",">
-                <if test="userId != null">
-                    user_id =#{userId},
+                <if test="acquisitionCardName != null">
+                    acquisitionCardName =#{acquisitionCardName},
                 </if>
-                <if test="num != null">
-                    num =#{num},
+                <if test="acquisitionCardModel != null">
+                    acquisitionCardModel =#{acquisitionCardModel},
+                </if>
+                <if test="channelNums != null">
+                    channelNums =#{channelNums},
+                </if>
+                <if test="ip != null">
+                    ip =#{ip},
+                </if>
+                <if test="port != null">
+                    port =#{port},
+                </if>
+                <if test="status != null">
+                    status =#{status},
+                </if>
+                <if test="creator != null">
+                    creator =#{creator},
+                </if>
+                <if test="modifier != null">
+                    modifier =#{modifier},
+                </if>
+                <if test="createTime != null">
+                    createTime =#{createTime},
+                </if>
+                <if test="modifyTime != null">
+                    modifyTime =#{modifyTime},
                 </if>
         </trim>
-        where record_id = #{acquisitioncardId}
+        where acquisitionCardCode = #{acquisitionCardCode}
     </update>
 
     <select id="selectAcquisitioncardList" parameterType="java.util.Map"
-            resultType="java.util.Map">
+            resultType="com.seer.panel.model.Acquisitioncard">
         select
-            user_id userId,
-            num num,
-        record_id acquisitioncardId
+            acquisitionCardName acquisitionCardName,
+            acquisitionCardModel acquisitionCardModel,
+            channelNums channelNums,
+            ip ip,
+            port port,
+            status status,
+            creator creator,
+            modifier modifier,
+            createTime createTime,
+            modifyTime modifyTime,
+        acquisitionCardCode acquisitionCardCode
         from acquisitioncard
         WHERE
         1=1
-        <if test="acquisitioncardId != null">
-            and record_id = #{acquisitioncardId}
+        <if test="acquisitionCardCode != null">
+            and acquisitionCardCode = #{acquisitionCardCode}
         </if>
-        <if test="userId != null">
-            and user_id like #{userId}
+        <if test="acquisitionCardName != null">
+            and acquisitionCardName like #{acquisitionCardName}
         </if>
-        <if test="num != null">
-            and num = #{num}
+        <if test="acquisitionCardModel != null">
+            and acquisitionCardModel like #{acquisitionCardModel}
         </if>
-        ORDER BY record_id ASC
+        <if test="channelNums != null">
+            and channelNums = #{channelNums}
+        </if>
+        <if test="ip != null">
+            and ip like #{ip}
+        </if>
+        <if test="port != null">
+            and port = #{port}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="creator != null">
+            and creator like #{creator}
+        </if>
+        <if test="modifier != null">
+            and modifier like #{modifier}
+        </if>
+        <if test="createTime != null">
+            and createTime = #{createTime}
+        </if>
+        <if test="modifyTime != null">
+            and modifyTime = #{modifyTime}
+        </if>
+        ORDER BY acquisitionCardCode ASC
     </select>
 
-    <delete id="delAcquisitioncardById" parameterType="java.lang.Integer">
+    <delete id="delAcquisitioncardById" parameterType="java.lang.String">
         DELETE FROM  acquisitioncard
         where
-        record_id = #{acquisitioncardId}
+        acquisitionCardCode = #{acquisitionCardCode}
     </delete>
 
 </mapper>

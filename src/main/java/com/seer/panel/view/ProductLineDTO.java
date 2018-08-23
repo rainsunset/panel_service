@@ -1,0 +1,57 @@
+package com.seer.panel.view;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
+
+/**
+ * @autheor ligw
+ * @date 2018/8/23 19:42
+ */
+@ApiModel(description = "生产线信息")
+public class ProductLineDTO implements Serializable {
+
+  @ApiModelProperty(value = "产线",required = true)
+  private String productionLine;
+
+  @ApiModelProperty(value = "车间",required = true)
+  private String worksShop;
+
+  @ApiModelProperty(value = "工厂",required = true)
+  private String factory;
+
+  @ApiModelProperty(value = "数据系统类型")
+  private String cncSystem;
+
+  public String getProductionLine() {
+    return productionLine;
+  }
+
+  public void setProductionLine(String productionLine) {
+    this.productionLine = productionLine;
+  }
+
+  public String getWorksShop() {
+    return worksShop;
+  }
+
+  public void setWorksShop(String worksShop) {
+    this.worksShop = worksShop;
+  }
+
+  public String getFactory() {
+    return factory;
+  }
+
+  public void setFactory(String factory) {
+    this.factory = factory;
+  }
+
+  public String getCncSystem() {
+    return cncSystem;
+  }
+
+  public void setCncSystem(String cncSystem) {
+    this.cncSystem = cncSystem;
+  }
+}

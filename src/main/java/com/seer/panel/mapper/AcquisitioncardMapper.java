@@ -35,8 +35,8 @@ public interface AcquisitioncardMapper {
 
     /**
      * 依据主键删除 采集卡信息 记录
-     * @param acquisitioncardId
+     * @param acquisitionCardCode
      */
-    public void  delAcquisitioncardById(Integer acquisitioncardId);
+    public void  delAcquisitioncardById(String acquisitionCardCode);
 
 }

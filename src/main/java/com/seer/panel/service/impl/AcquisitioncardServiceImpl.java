@@ -49,10 +49,10 @@ public class AcquisitioncardServiceImpl extends BaseService implements Acquisiti
     }
 
     @Override
-    public Acquisitioncard getAcquisitioncardById(Integer acquisitioncardId) {
+    public Acquisitioncard getAcquisitioncardById(String acquisitionCardCode) {
         Acquisitioncard acquisitioncardinfo = new Acquisitioncard();
         Map<String, Object> rs = new HashMap<String, Object>();
-        rs.put("acquisitioncardId", acquisitioncardId);
+        rs.put("acquisitionCardCode", acquisitionCardCode);
         List<Acquisitioncard> acquisitioncardList = acquisitioncardMapper.selectAcquisitioncardList(rs);
         if ((null != acquisitioncardList) && (acquisitioncardList.size() > 0)) {
             acquisitioncardinfo = acquisitioncardList.get(0);
@@ -61,14 +61,14 @@ public class AcquisitioncardServiceImpl extends BaseService implements Acquisiti
     }
 
     @Override
-    public void delAcquisitioncardById(Integer acquisitioncardId) {
+    public void delAcquisitioncardById(String acquisitionCardCode) {
 
      //Acquisitioncard acquisitioncard = new Acquisitioncard();
      //acquisitioncard.setIsDeleted(1);
-     //acquisitioncard.setAcquisitioncardId(acquisitioncardId);
+     //acquisitioncard.setAcquisitionCardCode(acquisitionCardCode);
      //acquisitioncardMapper.updateAcquisitioncardById(acquisitioncard);
 
-        acquisitioncardMapper.delAcquisitioncardById(acquisitioncardId);
+        acquisitioncardMapper.delAcquisitioncardById(acquisitionCardCode);
 
     }
 

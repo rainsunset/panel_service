@@ -22,13 +22,13 @@ import java.util.Map;
 
 /**
  * @author wuhaosoft
- * @version $Id AcquisitioncardController.java, 2018-08-22 17:12:42 wuhaosoft Exp
+ * @version $Id AcquisitioncardController.java, 2018-08-23 10:45:24 wuhaosoft Exp
  *
  */
-@Api("采集卡信息接口")
+@Api(tags = "采集卡信息接口")
 @RestController
 @RequestMapping("/panel")
-public class AcquisitioncardController extends BaseController {
+public class AcquisitioncardController extends BaseController{
 
     @Autowired
     private AcquisitioncardService acquisitioncardService;
@@ -36,16 +36,48 @@ public class AcquisitioncardController extends BaseController {
     @ApiOperation("查询 所有 采集卡信息 分页")
     @RequestMapping(value = "/acquisitioncards", method = RequestMethod.POST)
     public ResponseResult<PageInfo<Acquisitioncard>> getAcquisitioncardPageTurn(
-            @ApiParam(value = "userId (非必传参数)") @RequestParam(required = false) String userId,
-            @ApiParam(value = "num (非必传参数)") @RequestParam(required = false) Integer num,
+            @ApiParam(value = "采集卡名称 (非必传参数)") @RequestParam(required = false) String acquisitionCardName,
+            @ApiParam(value = "采集卡规格型号 (非必传参数)") @RequestParam(required = false) String acquisitionCardModel,
+            @ApiParam(value = "通道数量 (非必传参数)") @RequestParam(required = false) Integer channelNums,
+            @ApiParam(value = "ip (非必传参数)") @RequestParam(required = false) String ip,
+            @ApiParam(value = "端口号 (非必传参数)") @RequestParam(required = false) Integer port,
+            @ApiParam(value = "状态 (非必传参数)") @RequestParam(required = false) Integer status,
+            @ApiParam(value = "创建人 (非必传参数)") @RequestParam(required = false) String creator,
+            @ApiParam(value = "修改人 (非必传参数)") @RequestParam(required = false) String modifier,
+            @ApiParam(value = "创建时间 (非必传参数)") @RequestParam(required = false) Date createTime,
+            @ApiParam(value = "修改时间 (非必传参数)") @RequestParam(required = false) Date modifyTime,
             @ApiParam(value = "页码(必传)") @RequestParam Integer pageNo,
             @ApiParam(value = "每页显示多少数据(必传)") @RequestParam Integer pageSize) throws Exception {
         Map<String, Object> rs = new HashMap<String, Object>();
-        if (StringUtil.isNotEmpty(userId)) {
-           rs.put("userId", "%" + userId + "%");
+        if (StringUtil.isNotEmpty(acquisitionCardName)) {
+           rs.put("acquisitionCardName", "%" + acquisitionCardName + "%");
         }
-        if (null != num) {
-           rs.put("num", num);
+        if (StringUtil.isNotEmpty(acquisitionCardModel)) {
+           rs.put("acquisitionCardModel", "%" + acquisitionCardModel + "%");
+        }
+        if (null != channelNums) {
+           rs.put("channelNums", channelNums);
+        }
+        if (StringUtil.isNotEmpty(ip)) {
+           rs.put("ip", "%" + ip + "%");
+        }
+        if (null != port) {
+           rs.put("port", port);
+        }
+        if (null != status) {
+           rs.put("status", status);
+        }
+        if (StringUtil.isNotEmpty(creator)) {
+           rs.put("creator", "%" + creator + "%");
+        }
+        if (StringUtil.isNotEmpty(modifier)) {
+           rs.put("modifier", "%" + modifier + "%");
+        }
+        if (null != createTime) {
+           rs.put("createTime", createTime);
+        }
+        if (null != modifyTime) {
+           rs.put("modifyTime", modifyTime);
         }
         PageInfo<Acquisitioncard> pageInfo = acquisitioncardService.getAcquisitioncardPageTurn(rs, pageNo, pageSize);
         return RestResultGenerator.genResult(pageInfo);
@@ -54,15 +86,47 @@ public class AcquisitioncardController extends BaseController {
     @ApiOperation("查询 所有 采集卡信息")
     @RequestMapping(value = "/allAcquisitioncards", method = RequestMethod.POST)
     public ResponseResult<List<Acquisitioncard>> selectAcquisitioncardList(
-        @ApiParam(value = "userId (非必传参数)") @RequestParam(required = false) String userId,
-        @ApiParam(value = "num (非必传参数)") @RequestParam(required = false) Integer num
+        @ApiParam(value = "采集卡名称 (非必传参数)") @RequestParam(required = false) String acquisitionCardName,
+        @ApiParam(value = "采集卡规格型号 (非必传参数)") @RequestParam(required = false) String acquisitionCardModel,
+        @ApiParam(value = "通道数量 (非必传参数)") @RequestParam(required = false) Integer channelNums,
+        @ApiParam(value = "ip (非必传参数)") @RequestParam(required = false) String ip,
+        @ApiParam(value = "端口号 (非必传参数)") @RequestParam(required = false) Integer port,
+        @ApiParam(value = "状态 (非必传参数)") @RequestParam(required = false) Integer status,
+        @ApiParam(value = "创建人 (非必传参数)") @RequestParam(required = false) String creator,
+        @ApiParam(value = "修改人 (非必传参数)") @RequestParam(required = false) String modifier,
+        @ApiParam(value = "创建时间 (非必传参数)") @RequestParam(required = false) Date createTime,
+        @ApiParam(value = "修改时间 (非必传参数)") @RequestParam(required = false) Date modifyTime
         )throws Exception {
         Map<String, Object> rs = new HashMap<String, Object>();
-         if (StringUtil.isNotEmpty(userId)) {
-            rs.put("userId", "%" + userId + "%");
+         if (StringUtil.isNotEmpty(acquisitionCardName)) {
+            rs.put("acquisitionCardName", "%" + acquisitionCardName + "%");
          }
-        if (null != num) {
-            rs.put("num", num);
+         if (StringUtil.isNotEmpty(acquisitionCardModel)) {
+            rs.put("acquisitionCardModel", "%" + acquisitionCardModel + "%");
+         }
+        if (null != channelNums) {
+            rs.put("channelNums", channelNums);
+        }
+         if (StringUtil.isNotEmpty(ip)) {
+            rs.put("ip", "%" + ip + "%");
+         }
+        if (null != port) {
+            rs.put("port", port);
+        }
+        if (null != status) {
+            rs.put("status", status);
+        }
+         if (StringUtil.isNotEmpty(creator)) {
+            rs.put("creator", "%" + creator + "%");
+         }
+         if (StringUtil.isNotEmpty(modifier)) {
+            rs.put("modifier", "%" + modifier + "%");
+         }
+        if (null != createTime) {
+            rs.put("createTime", createTime);
+        }
+        if (null != modifyTime) {
+            rs.put("modifyTime", modifyTime);
         }
         List<Acquisitioncard> acquisitioncardList = acquisitioncardService.selectAcquisitioncardList(rs);
         return RestResultGenerator.genResult(acquisitioncardList);
@@ -71,15 +135,47 @@ public class AcquisitioncardController extends BaseController {
     @ApiOperation("新增 采集卡信息")
     @RequestMapping(value = "/acquisitioncard", method = RequestMethod.POST)
     public ResponseResult<String> addAcquisitioncard(
-                @ApiParam(value = "userId (非必传参数)") @RequestParam(required = false) String userId,
-                @ApiParam(value = "num (非必传参数)") @RequestParam(required = false) Integer num
+                @ApiParam(value = "采集卡名称 (非必传参数)") @RequestParam(required = false) String acquisitionCardName,
+                @ApiParam(value = "采集卡规格型号 (非必传参数)") @RequestParam(required = false) String acquisitionCardModel,
+                @ApiParam(value = "通道数量 (非必传参数)") @RequestParam(required = false) Integer channelNums,
+                @ApiParam(value = "ip (非必传参数)") @RequestParam(required = false) String ip,
+                @ApiParam(value = "端口号 (非必传参数)") @RequestParam(required = false) Integer port,
+                @ApiParam(value = "状态 (非必传参数)") @RequestParam(required = false) Integer status,
+                @ApiParam(value = "创建人 (非必传参数)") @RequestParam(required = false) String creator,
+                @ApiParam(value = "修改人 (非必传参数)") @RequestParam(required = false) String modifier,
+                @ApiParam(value = "创建时间 (非必传参数)") @RequestParam(required = false) Date createTime,
+                @ApiParam(value = "修改时间 (非必传参数)") @RequestParam(required = false) Date modifyTime
             ) throws Exception {
         Acquisitioncard acquisitioncard = new Acquisitioncard();
-        if (StringUtil.isNotEmpty(userId)) {
-           acquisitioncard.setUserId(userId);
+        if (StringUtil.isNotEmpty(acquisitionCardName)) {
+           acquisitioncard.setAcquisitionCardName(acquisitionCardName);
         }
-        if (null != num) {
-            acquisitioncard.setNum(num);
+        if (StringUtil.isNotEmpty(acquisitionCardModel)) {
+           acquisitioncard.setAcquisitionCardModel(acquisitionCardModel);
+        }
+        if (null != channelNums) {
+            acquisitioncard.setChannelNums(channelNums);
+        }
+        if (StringUtil.isNotEmpty(ip)) {
+           acquisitioncard.setIp(ip);
+        }
+        if (null != port) {
+            acquisitioncard.setPort(port);
+        }
+        if (null != status) {
+            acquisitioncard.setStatus(status);
+        }
+        if (StringUtil.isNotEmpty(creator)) {
+           acquisitioncard.setCreator(creator);
+        }
+        if (StringUtil.isNotEmpty(modifier)) {
+           acquisitioncard.setModifier(modifier);
+        }
+        if (null != createTime) {
+            acquisitioncard.setCreateTime(createTime);
+        }
+        if (null != modifyTime) {
+            acquisitioncard.setModifyTime(modifyTime);
         }
         //acquisitioncard.setCreatedDate(new Date());
         acquisitioncardService.addAcquisitioncard(acquisitioncard);
@@ -87,19 +183,52 @@ public class AcquisitioncardController extends BaseController {
     }
 
     @ApiOperation("更新 采集卡信息")
-    @RequestMapping(value = "/acquisitioncard/{acquisitioncardId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/acquisitioncard/{acquisitionCardCode}", method = RequestMethod.PUT)
     public ResponseResult<String> updateAcquisitioncardById(
-            @ApiParam(value = "111111 (必传参数)") @PathVariable Integer  acquisitioncardId,
-             @ApiParam(value = "userId (非必传参数)") @RequestParam(required = false) String userId,
-             @ApiParam(value = "num (非必传参数)") @RequestParam(required = false) Integer num
+            @ApiParam(value = "采集卡编码 (必传参数)") @PathVariable String  acquisitionCardCode,
+             @ApiParam(value = "采集卡名称 (非必传参数)") @RequestParam(required = false) String acquisitionCardName,
+             @ApiParam(value = "采集卡规格型号 (非必传参数)") @RequestParam(required = false) String acquisitionCardModel,
+             @ApiParam(value = "通道数量 (非必传参数)") @RequestParam(required = false) Integer channelNums,
+             @ApiParam(value = "ip (非必传参数)") @RequestParam(required = false) String ip,
+             @ApiParam(value = "端口号 (非必传参数)") @RequestParam(required = false) Integer port,
+             @ApiParam(value = "状态 (非必传参数)") @RequestParam(required = false) Integer status,
+             @ApiParam(value = "创建人 (非必传参数)") @RequestParam(required = false) String creator,
+             @ApiParam(value = "修改人 (非必传参数)") @RequestParam(required = false) String modifier,
+             @ApiParam(value = "创建时间 (非必传参数)") @RequestParam(required = false) Date createTime,
+             @ApiParam(value = "修改时间 (非必传参数)") @RequestParam(required = false) Date modifyTime
             ) throws Exception {
         Acquisitioncard acquisitioncard = new Acquisitioncard();
-        acquisitioncard.setAcquisitioncard(acquisitioncardId);
-         if (StringUtil.isNotEmpty(userId)) {
-            acquisitioncard.setUserId(userId);
+        acquisitioncard.setAcquisitionCardCode(acquisitionCardCode);
+
+         if (StringUtil.isNotEmpty(acquisitionCardName)) {
+            acquisitioncard.setAcquisitionCardName(acquisitionCardName);
          }
-         if (null != num) {
-            acquisitioncard.setNum(num);
+         if (StringUtil.isNotEmpty(acquisitionCardModel)) {
+            acquisitioncard.setAcquisitionCardModel(acquisitionCardModel);
+         }
+         if (null != channelNums) {
+            acquisitioncard.setChannelNums(channelNums);
+         }
+         if (StringUtil.isNotEmpty(ip)) {
+            acquisitioncard.setIp(ip);
+         }
+         if (null != port) {
+            acquisitioncard.setPort(port);
+         }
+         if (null != status) {
+            acquisitioncard.setStatus(status);
+         }
+         if (StringUtil.isNotEmpty(creator)) {
+            acquisitioncard.setCreator(creator);
+         }
+         if (StringUtil.isNotEmpty(modifier)) {
+            acquisitioncard.setModifier(modifier);
+         }
+         if (null != createTime) {
+            acquisitioncard.setCreateTime(createTime);
+         }
+         if (null != modifyTime) {
+            acquisitioncard.setModifyTime(modifyTime);
          }
         //acquisitioncard.setModifiedDate(new Date());
         acquisitioncardService.updateAcquisitioncardById(acquisitioncard);
@@ -107,20 +236,19 @@ public class AcquisitioncardController extends BaseController {
     }
 
     @ApiOperation("删除 采集卡信息")
-    @RequestMapping(value = "/acquisitioncard/{acquisitioncardId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/acquisitioncard/{acquisitionCardCode}", method = RequestMethod.DELETE)
     public ResponseResult<String> delAcquisitioncardById(
-             @ApiParam(value = "111111 (必传参数)") @PathVariable Integer  acquisitioncardId
+             @ApiParam(value = "采集卡编码 (必传参数)") @PathVariable String  acquisitionCardCode
             ) throws Exception {
-        acquisitioncardService.delAcquisitioncardById(acquisitioncardId);
+        acquisitioncardService.delAcquisitioncardById(acquisitionCardCode);
         return RestResultGenerator.genResult("sucess");
     }
 
     @ApiOperation("查询 采集卡信息")
-    @RequestMapping(value = "/acquisitioncard/{acquisitioncardId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/acquisitioncard/{acquisitionCardCode}", method = RequestMethod.GET)
     public ResponseResult<Acquisitioncard> getAcquisitioncardById(
-            @ApiParam(value = "111111 (必传参数)") @PathVariable Integer  acquisitioncardId) throws Exception {
-        Map<String, Object> rs = new HashMap<String, Object>();
-        return RestResultGenerator.genResult(acquisitioncardService.getAcquisitioncardById(acquisitioncardId));
+            @ApiParam(value = "采集卡编码 (必传参数)") @PathVariable String  acquisitionCardCode) throws Exception {
+        return RestResultGenerator.genResult(acquisitioncardService.getAcquisitioncardById(acquisitionCardCode));
     }
 }
 
