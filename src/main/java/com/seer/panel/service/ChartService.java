@@ -2,6 +2,7 @@ package com.seer.panel.service;
 
 import com.seer.panel.model.KnifeBrokenRepore;
 import com.seer.panel.model.MachineProductReport;
+import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.model.ProductLineAlarmReport;
 import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.view.MachineLifencyWarningReportVO;
@@ -25,7 +26,7 @@ public interface ChartService {
    * @param productLine
    * @return
    */
-  public List<ProductLineMachineStatusReport> getProductLineMachineStatusReport(ProductLineDTO productLine) throws Exception;
+  public ProductLineMachineStatusReport getProductLineMachineStatusReport(ProductLineDTO productLine) throws Exception;
 
   /**
    * 生产线报警
@@ -47,4 +48,12 @@ public interface ChartService {
    * @return
    */
   public List<KnifeBrokenRepore> getKnifeBrokenRepore(ProductLineDTO productLine) throws Exception;
+
+  /**
+   * 生产线生产统计
+   * @param productLineDTO
+   * @return
+   * @throws Exception
+   */
+  public ProdLineProdReport getProdLineProdReport(ProductLineDTO productLineDTO)throws Exception;
 }

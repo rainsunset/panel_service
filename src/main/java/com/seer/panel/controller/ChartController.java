@@ -5,6 +5,7 @@ import com.seer.panel.exception.GlobalErrorInfoEnum;
 import com.seer.panel.exception.GlobalErrorInfoException;
 import com.seer.panel.model.KnifeBrokenRepore;
 import com.seer.panel.model.MachineProductReport;
+import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.model.ProductLineAlarmReport;
 import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.service.ChartService;
@@ -51,12 +52,12 @@ public class ChartController extends BaseController {
 
   @ApiOperation("机器实时状态")
   @RequestMapping(value = "/productLineMachineStatusReport", method = RequestMethod.POST)
-  public ResponseResult<List<ProductLineMachineStatusReport>> getProductLineMachineStatusReport(
+  public ResponseResult<ProductLineMachineStatusReport> getProductLineMachineStatusReport(
       @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
     try {
-      List<ProductLineMachineStatusReport> productLineMachineStatusReportList = chartService
+      ProductLineMachineStatusReport productLineMachineStatusReport = chartService
           .getProductLineMachineStatusReport(productLine);
-      return RestResultGenerator.genResult(productLineMachineStatusReportList);
+      return RestResultGenerator.genResult(productLineMachineStatusReport);
     } catch (GlobalErrorInfoException e) {
       throw e;
     } catch (Exception e) {
@@ -105,6 +106,21 @@ public class ChartController extends BaseController {
       List<KnifeBrokenRepore> knifeBrokenReporeList = chartService
           .getKnifeBrokenRepore(productLine);
       return RestResultGenerator.genResult(knifeBrokenReporeList);
+    } catch (GlobalErrorInfoException e) {
+      throw e;
+    } catch (Exception e) {
+      logger.error(String.format("Controller >>> 断刀频率统计 接口异常 >>> msg:%S",e.toString()));
+      throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
+    }
+  }
+
+  @ApiOperation(" 生产线生产统计")
+  @RequestMapping(value = "/prodLineProdReport", method = RequestMethod.POST)
+  public ResponseResult<ProdLineProdReport> getProdLineProdReport(
+      @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
+    try {
+      ProdLineProdReport prodLineProdReport = chartService.getProdLineProdReport(productLine);
+      return RestResultGenerator.genResult(prodLineProdReport);
     } catch (GlobalErrorInfoException e) {
       throw e;
     } catch (Exception e) {

@@ -11,8 +11,8 @@ import java.io.Serializable;
 @ApiModel(description = "断刀频率统计")
 public class KnifeBrokenRepore implements Serializable {
 
-  @ApiModelProperty(value = "机床名称")
-  private String machineName;
+  @ApiModelProperty(value = "产线")
+  private String productionLine;
 
   @ApiModelProperty(value = "刀径")
   private String knifeDiameter;

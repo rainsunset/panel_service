@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 8089
   name: prodPanel
 
 #自定义参数
@@ -7,6 +7,10 @@ demoprop:
   name: ${server.name}
   sex: ${random.int[0,1]}
 
+#产线参数
+prodProp:
+  knifeDefaultLife: 5000
+  plannedProduction: 800
 spring:
     datasource:
         url: jdbc:sqlserver://localhost:1433;DatabaseName=seerbigdata

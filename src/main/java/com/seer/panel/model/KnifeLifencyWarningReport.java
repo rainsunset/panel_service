@@ -21,7 +21,7 @@ public class KnifeLifencyWarningReport implements Serializable {
   private Integer totalCount;
 
   @ApiModelProperty(value = "已使用次数")
-  private Integer currentLife;
+  private Integer currentCount;
 
   public String getMachineName() {
     return machineName;
@@ -47,11 +47,11 @@ public class KnifeLifencyWarningReport implements Serializable {
     this.totalCount = totalCount;
   }
 
-  public Integer getCurrentLife() {
-    return currentLife;
+  public Integer getCurrentCount() {
+    return currentCount;
   }
 
-  public void setCurrentLife(Integer currentLife) {
-    this.currentLife = currentLife;
+  public void setCurrentCount(Integer currentCount) {
+    this.currentCount = currentCount;
   }
 }

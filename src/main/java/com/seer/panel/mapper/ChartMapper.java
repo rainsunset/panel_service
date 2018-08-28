@@ -3,6 +3,7 @@ package com.seer.panel.mapper;
 import com.seer.panel.model.KnifeBrokenRepore;
 import com.seer.panel.model.KnifeLifencyWarningReport;
 import com.seer.panel.model.MachineProductReport;
+import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.view.ProductLineDTO;
 import com.seer.panel.model.ProductLineAlarmReport;
 import com.seer.panel.model.ProductLineMachineStatusReport;
@@ -28,7 +29,7 @@ public interface ChartMapper {
    * @param productLine
    * @return
    */
-  public List<ProductLineMachineStatusReport> getProductLineMachineStatusReport(ProductLineDTO productLine) throws Exception;
+  public List<List<?>> getProductLineMachineStatusReport(ProductLineDTO productLine) throws Exception;
 
   /**
    * 生产线报警
@@ -51,6 +52,12 @@ public interface ChartMapper {
    */
   public List<KnifeBrokenRepore> getKnifeBrokenRepore(ProductLineDTO productLine) throws Exception;
 
-
+  /**
+   * 生产线生产统计
+   * @param productLineDTO
+   * @return
+   * @throws Exception
+   */
+  public ProdLineProdReport getProdLineProdReport(ProductLineDTO productLineDTO)throws Exception;
 
 }

@@ -38,11 +38,20 @@ public class MachineLifencyWarningReportVO {
     List<KnifeLifency> knifeLifencyList = new ArrayList<>();
     for (KnifeLifencyWarningReport knifeLifencyWarningReport : knifeLifencyWarningReportList) {
       KnifeLifency knifeLifency = new KnifeLifency();
-      knifeLifency.setCurrentLife(knifeLifencyWarningReport.getCurrentLife());
       knifeLifency.setKnifePosition(knifeLifencyWarningReport.getKnifePosition());
-      knifeLifency.setTotalCount(knifeLifencyWarningReport.getTotalCount());
-      knifeLifency.setSurplusLife(
-          knifeLifencyWarningReport.getTotalCount() - knifeLifencyWarningReport.getCurrentLife());
+      Integer currentCount =
+          (null == knifeLifencyWarningReport.getCurrentCount() || 0 > knifeLifencyWarningReport
+              .getCurrentCount())
+              ? 0 : knifeLifencyWarningReport.getCurrentCount();
+      Integer totakCount =
+          (null == knifeLifencyWarningReport.getTotalCount() || 0 > knifeLifencyWarningReport
+              .getTotalCount())
+              ? 0 : knifeLifencyWarningReport.getTotalCount();
+      Integer surplusCount = (0 > totakCount - currentCount) ? 0 : (totakCount - currentCount);
+      knifeLifency.setCurrentCount(currentCount);
+      knifeLifency.setTotalCount(totakCount);
+      knifeLifency.setSurplusCount(surplusCount);
+      knifeLifencyList.add(knifeLifency);
     }
     this.knifeLifencyList = knifeLifencyList;
   }
@@ -57,10 +66,10 @@ public class MachineLifencyWarningReportVO {
     private Integer totalCount;
 
     @ApiModelProperty(value = "已使用次数")
-    private Integer currentLife;
+    private Integer currentCount;
 
     @ApiModelProperty(value = "剩余次数")
-    private Integer surplusLife;
+    private Integer surplusCount;
 
     public String getKnifePosition() {
       return knifePosition;
@@ -78,20 +87,20 @@ public class MachineLifencyWarningReportVO {
       this.totalCount = totalCount;
     }
 
-    public Integer getCurrentLife() {
-      return currentLife;
+    public Integer getCurrentCount() {
+      return currentCount;
     }
 
-    public void setCurrentLife(Integer currentLife) {
-      this.currentLife = currentLife;
+    public void setCurrentCount(Integer currentCount) {
+      this.currentCount = currentCount;
     }
 
-    public Integer getSurplusLife() {
-      return surplusLife;
+    public Integer getSurplusCount() {
+      return surplusCount;
     }
 
-    public void setSurplusLife(Integer surplusLife) {
-      this.surplusLife = surplusLife;
+    public void setSurplusCount(Integer surplusCount) {
+      this.surplusCount = surplusCount;
     }
   }
 
