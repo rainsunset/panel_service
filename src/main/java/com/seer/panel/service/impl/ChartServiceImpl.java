@@ -102,7 +102,7 @@ public class ChartServiceImpl extends BaseService implements ChartService {
     Map<String, List<KnifeLifencyWarningReport>> KnifeLifencyWarningReportCollect = new HashMap<>();
     for (KnifeLifencyWarningReport knifeLifencyWarningReport : knifeLifencyWarningReportList) {
       if (null == knifeLifencyWarningReport.getCurrentCount() || 1 > knifeLifencyWarningReport.getCurrentCount()) {
-        knifeLifencyWarningReport.setTotalCount(5000);
+        knifeLifencyWarningReport.setTotalCount(knifeDefaultLife);
       }
       String machineName = knifeLifencyWarningReport.getMachineName();
       List<KnifeLifencyWarningReport> list = KnifeLifencyWarningReportCollect.get(machineName);
