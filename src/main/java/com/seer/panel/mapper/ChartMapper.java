@@ -1,7 +1,7 @@
 package com.seer.panel.mapper;
 
-import com.seer.panel.model.KnifeBrokenReporeByDiameter;
-import com.seer.panel.model.KnifeBrokenReporeByPosition;
+import com.seer.panel.model.KnifeBrokenReportByDiameter;
+import com.seer.panel.model.KnifeBrokenReportByPosition;
 import com.seer.panel.model.KnifeLifencyWarningReport;
 import com.seer.panel.model.MachineProductReport;
 import com.seer.panel.view.ProductLineDTO;
@@ -49,9 +49,9 @@ public interface ChartMapper {
    * @param productLine
    * @return
    */
-  public List<KnifeBrokenReporeByDiameter> getKnifeBrokenReporeByDiameter (ProductLineDTO productLine) throws Exception;
+  public List<KnifeBrokenReportByDiameter> getKnifeBrokenReportByDiameter (ProductLineDTO productLine) throws Exception;
 
-  public List<KnifeBrokenReporeByPosition> getKnifeBrokenReporeByPosition(ProductLineDTO productLine) throws Exception;
+  public List<KnifeBrokenReportByPosition> getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception;
 
   /**
    * 生产线生产统计

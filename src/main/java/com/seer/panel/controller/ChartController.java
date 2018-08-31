@@ -3,8 +3,8 @@ package com.seer.panel.controller;
 import com.seer.panel.common.BaseController;
 import com.seer.panel.exception.GlobalErrorInfoEnum;
 import com.seer.panel.exception.GlobalErrorInfoException;
-import com.seer.panel.model.KnifeBrokenReporeByDiameter;
-import com.seer.panel.model.KnifeBrokenReporeByPosition;
+import com.seer.panel.model.KnifeBrokenReportByDiameter;
+import com.seer.panel.model.KnifeBrokenReportByPosition;
 import com.seer.panel.model.MachineProductReport;
 import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.model.ProductLineAlarmReport;
@@ -100,13 +100,13 @@ public class ChartController extends BaseController {
   }
 
   @ApiOperation("一周内断刀频率统计(按刀径)")
-  @RequestMapping(value = "/knifeBrokenReporeByDiameter", method = RequestMethod.POST)
-  public ResponseResult<List<KnifeBrokenReporeByDiameter>> getKnifeBrokenReporeByDiameter(
+  @RequestMapping(value = "/knifeBrokenReportByDiameter", method = RequestMethod.POST)
+  public ResponseResult<List<KnifeBrokenReportByDiameter>> getKnifeBrokenReportByDiameter(
       @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
     try {
-      List<KnifeBrokenReporeByDiameter> knifeBrokenReporeByDiameterList = chartService
-          .getKnifeBrokenReporeByDiameter(productLine);
-      return RestResultGenerator.genResult(knifeBrokenReporeByDiameterList);
+      List<KnifeBrokenReportByDiameter> knifeBrokenReportByDiameterList = chartService
+          .getKnifeBrokenReportByDiameter(productLine);
+      return RestResultGenerator.genResult(knifeBrokenReportByDiameterList);
     } catch (GlobalErrorInfoException e) {
       throw e;
     } catch (Exception e) {
@@ -116,13 +116,13 @@ public class ChartController extends BaseController {
   }
 
   @ApiOperation("一周内断刀频率统计(按刀位)")
-  @RequestMapping(value = "/knifeBrokenReporeByPosition", method = RequestMethod.POST)
-  public ResponseResult<List<KnifeBrokenReporeByPosition>> getKnifeBrokenReporeByPosition(
+  @RequestMapping(value = "/knifeBrokenReportByPosition", method = RequestMethod.POST)
+  public ResponseResult<List<KnifeBrokenReportByPosition>> getKnifeBrokenReportByPosition(
           @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
     try {
-      List<KnifeBrokenReporeByPosition> knifeBrokenReporeByPositionList = chartService
-              .getKnifeBrokenReporeByPosition(productLine);
-      return RestResultGenerator.genResult(knifeBrokenReporeByPositionList);
+      List<KnifeBrokenReportByPosition> knifeBrokenReportByPositionList = chartService
+              .getKnifeBrokenReportByPosition(productLine);
+      return RestResultGenerator.genResult(knifeBrokenReportByPositionList);
     } catch (GlobalErrorInfoException e) {
       throw e;
     } catch (Exception e) {

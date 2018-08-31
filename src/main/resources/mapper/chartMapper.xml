@@ -78,8 +78,8 @@
 
 
   <!--周内各刀经断刀频次-->
-  <select id="getKnifeBrokenReporeByDiameter" parameterType="com.seer.panel.view.ProductLineDTO"
-    resultType="com.seer.panel.model.KnifeBrokenReporeByDiameter">
+  <select id="getKnifeBrokenReportByDiameter" parameterType="com.seer.panel.view.ProductLineDTO"
+    resultType="com.seer.panel.model.KnifeBrokenReportByDiameter">
   select mac.productionLine ,broH.knifeDiameter ,COUNT(1) as brokenNum
   from brokenhistory broH with(nolock)
   join machineinfo mac with(nolock) on mac.machineCode = broH.machineCode
@@ -91,8 +91,8 @@
   </select>
 
   <!--周内各刀位断刀频次-->
-  <select id="getKnifeBrokenReporeByPosition" parameterType="com.seer.panel.view.ProductLineDTO"
-    resultType="com.seer.panel.model.KnifeBrokenReporeByPosition">
+  <select id="getKnifeBrokenReportByPosition" parameterType="com.seer.panel.view.ProductLineDTO"
+    resultType="com.seer.panel.model.KnifeBrokenReportByPosition">
   select mac.productionLine ,broH.knifeNum ,COUNT(1) as brokenNum
   from brokenhistory broH with(nolock)
   join machineinfo mac with(nolock) on mac.machineCode = broH.machineCode

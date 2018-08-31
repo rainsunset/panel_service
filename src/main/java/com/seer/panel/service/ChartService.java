@@ -1,7 +1,7 @@
 package com.seer.panel.service;
 
-import com.seer.panel.model.KnifeBrokenReporeByDiameter;
-import com.seer.panel.model.KnifeBrokenReporeByPosition;
+import com.seer.panel.model.KnifeBrokenReportByDiameter;
+import com.seer.panel.model.KnifeBrokenReportByPosition;
 import com.seer.panel.model.MachineProductReport;
 import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.model.ProductLineAlarmReport;
@@ -48,14 +48,14 @@ public interface ChartService {
    * @param productLine
    * @return
    */
-  public List<KnifeBrokenReporeByDiameter> getKnifeBrokenReporeByDiameter(ProductLineDTO productLine) throws Exception;
+  public List<KnifeBrokenReportByDiameter> getKnifeBrokenReportByDiameter(ProductLineDTO productLine) throws Exception;
 
   /**
    * 断刀频率统计(按刀径)
    * @param productLine
    * @return
    */
-  public List<KnifeBrokenReporeByPosition> getKnifeBrokenReporeByPosition(ProductLineDTO productLine) throws Exception;
+  public List<KnifeBrokenReportByPosition> getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception;
 
   /**
    * 生产线生产统计

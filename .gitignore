@@ -2,3 +2,6 @@
 .idea
 *.iml
 target
+
+application-prod.yml
+application-test.yml

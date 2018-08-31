@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @date 2018/8/23 20:39
  */
 @ApiModel(description = "断刀频率统计")
-public class KnifeBrokenReporeByDiameter implements Serializable {
+public class KnifeBrokenReportByDiameter implements Serializable {
 
   @ApiModelProperty(value = "产线")
   private String productionLine;

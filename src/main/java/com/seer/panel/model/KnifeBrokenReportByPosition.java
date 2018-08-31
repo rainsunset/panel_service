@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @autheor ligw
  * @date 2018/8/31 10:56
  */
-public class KnifeBrokenReporeByPosition implements Serializable {
+public class KnifeBrokenReportByPosition implements Serializable {
 	@ApiModelProperty(value = "产线")
 	private String productionLine;
 

@@ -4,8 +4,8 @@ import com.seer.panel.common.BaseService;
 import com.seer.panel.exception.GlobalErrorInfoEnum;
 import com.seer.panel.exception.GlobalErrorInfoException;
 import com.seer.panel.mapper.ChartMapper;
-import com.seer.panel.model.KnifeBrokenReporeByDiameter;
-import com.seer.panel.model.KnifeBrokenReporeByPosition;
+import com.seer.panel.model.KnifeBrokenReportByDiameter;
+import com.seer.panel.model.KnifeBrokenReportByPosition;
 import com.seer.panel.model.KnifeLifencyWarningReport;
 import com.seer.panel.model.MachineInfo;
 import com.seer.panel.model.MachineProductReport;
@@ -127,27 +127,27 @@ public class ChartServiceImpl extends BaseService implements ChartService {
   }
 
   @Override
-  public List<KnifeBrokenReporeByDiameter> getKnifeBrokenReporeByDiameter(ProductLineDTO productLine) throws Exception {
-    List<KnifeBrokenReporeByDiameter> knifeBrokenReporeByDiameters = null;
+  public List<KnifeBrokenReportByDiameter> getKnifeBrokenReportByDiameter(ProductLineDTO productLine) throws Exception {
+    List<KnifeBrokenReportByDiameter> knifeBrokenReportByDiameters = null;
     try {
-      knifeBrokenReporeByDiameters = chartMapper.getKnifeBrokenReporeByDiameter(productLine);
+      knifeBrokenReportByDiameters = chartMapper.getKnifeBrokenReportByDiameter(productLine);
     } catch (Exception e) {
       logger.error(String.format("断刀频率统计(按刀径) >>> 异常信息:%S",e.toString()));
       throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
     }
-    return knifeBrokenReporeByDiameters;
+    return knifeBrokenReportByDiameters;
   }
 
   @Override
-  public List<KnifeBrokenReporeByPosition> getKnifeBrokenReporeByPosition(ProductLineDTO productLine) throws Exception {
-    List<KnifeBrokenReporeByPosition> knifeBrokenReporeByPositions = null;
+  public List<KnifeBrokenReportByPosition> getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception {
+    List<KnifeBrokenReportByPosition> knifeBrokenReportByPositions = null;
     try {
-      knifeBrokenReporeByPositions = chartMapper.getKnifeBrokenReporeByPosition(productLine);
+      knifeBrokenReportByPositions = chartMapper.getKnifeBrokenReportByPosition(productLine);
     } catch (Exception e) {
       logger.error(String.format("断刀频率统计(按刀径) >>> 异常信息:%S",e.toString()));
       throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
     }
-    return knifeBrokenReporeByPositions;
+    return knifeBrokenReportByPositions;
   }
 
   @Override
