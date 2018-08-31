@@ -23,7 +23,7 @@
 
 
   <!--本周机器稼动时长排行  本周机器生产力-->
-  <!--排序 设备名 工作时长(SECOND) 生产量-->
+  <!--排序 设备名 工作时长(minute) 生产量-->
   <select id="getMachineProductReport" parameterType="com.seer.panel.view.ProductLineDTO"
     resultType="com.seer.panel.model.MachineProductReport">
     SELECT ROW_NUMBER() OVER (order by macPSH.macWorkTime DESC) rank ,mac.machineName ,(macPSH.macWorkTime/60)macWorkTime ,macPSH.macProdNum
@@ -32,7 +32,7 @@
       SELECT macSH.machineCode , SUM(datediff(SECOND,macSH.startTime,macSH.endTime)) macWorkTime ,COUNT(1) macProdNum
       from machinestatushistory macSH with(nolock)
       WHERE macSH.status = 1 AND macSH.startTime IS NOT NULL AND macSH.endTime IS NOT NULL
-      AND CONVERT(varchar(100),macSH.startTime,23) BETWEEN CONVERT(varchar(100),DATEADD(WEEK,-1, GETDATE()),23) AND CONVERT(varchar(100),GETDATE(), 23)
+      AND CONVERT(varchar(100),macSH.startTime,23) BETWEEN CONVERT(varchar(100),DATEADD(DAY,-8, GETDATE()),23) AND CONVERT(varchar(100),DATEADD(DAY ,-1, GETDATE()), 23)
       GROUP BY macSH.machineCode
     ) macPSH ON mac.machineCode = macPSH.machineCode
     WHERE mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
@@ -48,7 +48,7 @@
   <!--15min内报警信息-->
   <select id="getProductLineAlarmReport" parameterType="com.seer.panel.view.ProductLineDTO"
     resultType="com.seer.panel.model.ProductLineAlarmReport">
-    SELECT mac.machineName ,macPArm.alarmMsg ,macPArm.knifeNum ,macPArm.occurrenceTime
+    SELECT mac.machineName ,convert(varchar(100), macPArm.alarmMsg) alarmMsg ,macPArm.knifeNum ,macPArm.occurrenceTime
     FROM machineinfo mac with(nolock)
     INNER JOIN(
       select macArm.machineCode ,macArm.alarmMsg ,macArm.knifeNum ,MIN(macArm.occurrenceTime) occurrenceTime
@@ -77,29 +77,42 @@
   </select>
 
 
-  <!--月内各刀经断刀频次-->
-  <select id="getKnifeBrokenRepore" parameterType="com.seer.panel.view.ProductLineDTO"
-    resultType="com.seer.panel.model.KnifeBrokenRepore">
+  <!--周内各刀经断刀频次-->
+  <select id="getKnifeBrokenReporeByDiameter" parameterType="com.seer.panel.view.ProductLineDTO"
+    resultType="com.seer.panel.model.KnifeBrokenReporeByDiameter">
   select mac.productionLine ,broH.knifeDiameter ,COUNT(1) as brokenNum
   from brokenhistory broH with(nolock)
   join machineinfo mac with(nolock) on mac.machineCode = broH.machineCode
-  where broH.bBroken=1 AND CONVERT(varchar(100),broH.brokenTime,23) BETWEEN CONVERT(varchar(100),DATEADD(MONTH,-1, GETDATE()),23) AND CONVERT(varchar(100),GETDATE(), 23)
+  where broH.bBroken=1 AND CONVERT(varchar(100),broH.brokenTime,23)
+    BETWEEN CONVERT(varchar(100),DATEADD(DAY,-8, GETDATE()),23) AND CONVERT(varchar(100),DATEADD(DAY ,-1, GETDATE()), 23)
     AND mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
   group by mac.productionLine,broH.knifeDiameter
   order by broH.knifeDiameter
   </select>
 
-  <!--今天生产数量-->
+  <!--周内各刀位断刀频次-->
+  <select id="getKnifeBrokenReporeByPosition" parameterType="com.seer.panel.view.ProductLineDTO"
+    resultType="com.seer.panel.model.KnifeBrokenReporeByPosition">
+  select mac.productionLine ,broH.knifeNum ,COUNT(1) as brokenNum
+  from brokenhistory broH with(nolock)
+  join machineinfo mac with(nolock) on mac.machineCode = broH.machineCode
+  where broH.bBroken=1 AND CONVERT(varchar(100),broH.brokenTime,23)
+    BETWEEN CONVERT(varchar(100),DATEADD(DAY,-8, GETDATE()),23) AND CONVERT(varchar(100),DATEADD(DAY ,-1, GETDATE()), 23)
+    AND mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
+  group by mac.productionLine,broH.knifeNum
+  order by broH.knifeNum
+  </select>
+
+  <!--当天生产数量-->
   <select id="getProdLineProdReport" parameterType="com.seer.panel.view.ProductLineDTO"
-    resultType="com.seer.panel.model.ProdLineProdReport">
-    SELECT mac.productionLine ,COUNT(1) prodLineProdNum
-    from machinestatushistory macSH
+    resultType="java.lang.Integer">
+    SELECT COUNT(1) prodLineProdNum
+    from machinestatushistory macSH with(nolock)
     LEFT JOIN machineinfo mac ON mac.machineCode = macSH.machineCode
     WHERE macSH.status = 1 AND macSH.startTime IS NOT NULL AND macSH.endTime IS NOT NULL
       AND CONVERT(varchar(100),macSH.startTime,23)  = CONVERT(varchar(100),GETDATE(), 23)
       AND mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
     GROUP BY mac.productionLine
   </select>
-
 
 </mapper>

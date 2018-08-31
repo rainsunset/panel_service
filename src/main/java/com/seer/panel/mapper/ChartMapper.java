@@ -1,12 +1,11 @@
 package com.seer.panel.mapper;
 
-import com.seer.panel.model.KnifeBrokenRepore;
+import com.seer.panel.model.KnifeBrokenReporeByDiameter;
+import com.seer.panel.model.KnifeBrokenReporeByPosition;
 import com.seer.panel.model.KnifeLifencyWarningReport;
 import com.seer.panel.model.MachineProductReport;
-import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.view.ProductLineDTO;
 import com.seer.panel.model.ProductLineAlarmReport;
-import com.seer.panel.model.ProductLineMachineStatusReport;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 
@@ -50,7 +49,9 @@ public interface ChartMapper {
    * @param productLine
    * @return
    */
-  public List<KnifeBrokenRepore> getKnifeBrokenRepore(ProductLineDTO productLine) throws Exception;
+  public List<KnifeBrokenReporeByDiameter> getKnifeBrokenReporeByDiameter (ProductLineDTO productLine) throws Exception;
+
+  public List<KnifeBrokenReporeByPosition> getKnifeBrokenReporeByPosition(ProductLineDTO productLine) throws Exception;
 
   /**
    * 生产线生产统计
@@ -58,6 +59,6 @@ public interface ChartMapper {
    * @return
    * @throws Exception
    */
-  public ProdLineProdReport getProdLineProdReport(ProductLineDTO productLineDTO)throws Exception;
+  public Integer getProdLineProdReport(ProductLineDTO productLineDTO)throws Exception;
 
 }

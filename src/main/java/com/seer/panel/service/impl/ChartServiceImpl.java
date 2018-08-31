@@ -4,7 +4,8 @@ import com.seer.panel.common.BaseService;
 import com.seer.panel.exception.GlobalErrorInfoEnum;
 import com.seer.panel.exception.GlobalErrorInfoException;
 import com.seer.panel.mapper.ChartMapper;
-import com.seer.panel.model.KnifeBrokenRepore;
+import com.seer.panel.model.KnifeBrokenReporeByDiameter;
+import com.seer.panel.model.KnifeBrokenReporeByPosition;
 import com.seer.panel.model.KnifeLifencyWarningReport;
 import com.seer.panel.model.MachineInfo;
 import com.seer.panel.model.MachineProductReport;
@@ -112,7 +113,6 @@ public class ChartServiceImpl extends BaseService implements ChartService {
         KnifeLifencyWarningReportCollect.put(machineName, list);
       } else {
         list.add(knifeLifencyWarningReport);
-//          KnifeLifencyWarningReportCollect.put(machineName, list);
       }
     }
     //整理分组
@@ -127,28 +127,41 @@ public class ChartServiceImpl extends BaseService implements ChartService {
   }
 
   @Override
-  public List<KnifeBrokenRepore> getKnifeBrokenRepore(ProductLineDTO productLine) throws Exception {
-    List<KnifeBrokenRepore> knifeBrokenRepores = null;
+  public List<KnifeBrokenReporeByDiameter> getKnifeBrokenReporeByDiameter(ProductLineDTO productLine) throws Exception {
+    List<KnifeBrokenReporeByDiameter> knifeBrokenReporeByDiameters = null;
     try {
-      knifeBrokenRepores = chartMapper.getKnifeBrokenRepore(productLine);
+      knifeBrokenReporeByDiameters = chartMapper.getKnifeBrokenReporeByDiameter(productLine);
     } catch (Exception e) {
       logger.error(String.format("断刀频率统计(按刀径) >>> 异常信息:%S",e.toString()));
       throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
     }
-    return knifeBrokenRepores;
+    return knifeBrokenReporeByDiameters;
+  }
+
+  @Override
+  public List<KnifeBrokenReporeByPosition> getKnifeBrokenReporeByPosition(ProductLineDTO productLine) throws Exception {
+    List<KnifeBrokenReporeByPosition> knifeBrokenReporeByPositions = null;
+    try {
+      knifeBrokenReporeByPositions = chartMapper.getKnifeBrokenReporeByPosition(productLine);
+    } catch (Exception e) {
+      logger.error(String.format("断刀频率统计(按刀径) >>> 异常信息:%S",e.toString()));
+      throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
+    }
+    return knifeBrokenReporeByPositions;
   }
 
   @Override
   public ProdLineProdReport getProdLineProdReport(ProductLineDTO productLineDTO) throws Exception {
-    ProdLineProdReport prodLineProdReport = null;
+    ProdLineProdReport prodLineProdReport = new ProdLineProdReport();
+    prodLineProdReport.setProductionLine(productLineDTO.getProductionLine());
     try {
-      prodLineProdReport = chartMapper.getProdLineProdReport(productLineDTO);
-      //TODO 调接口拿数据
-      prodLineProdReport.setPlannedProduction(plannedProduction);
+      prodLineProdReport.setProdLineProdNum(chartMapper.getProdLineProdReport(productLineDTO));
     } catch (Exception e) {
       logger.error(String.format(" 生产线生产统计 >>> 异常信息:%S",e.toString()));
       throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
     }
+    //TODO 调接口拿数据
+    prodLineProdReport.setPlannedProduction(plannedProduction);
     return prodLineProdReport;
   }
 }

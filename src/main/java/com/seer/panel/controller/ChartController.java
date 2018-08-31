@@ -3,7 +3,8 @@ package com.seer.panel.controller;
 import com.seer.panel.common.BaseController;
 import com.seer.panel.exception.GlobalErrorInfoEnum;
 import com.seer.panel.exception.GlobalErrorInfoException;
-import com.seer.panel.model.KnifeBrokenRepore;
+import com.seer.panel.model.KnifeBrokenReporeByDiameter;
+import com.seer.panel.model.KnifeBrokenReporeByPosition;
 import com.seer.panel.model.MachineProductReport;
 import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.model.ProductLineAlarmReport;
@@ -34,7 +35,7 @@ public class ChartController extends BaseController {
   @Autowired
   private ChartService chartService;
 
-  @ApiOperation("机床稼动率排行 生产数")
+  @ApiOperation("一周内机床稼动时长排行 生产数")
   @RequestMapping(value = "/machineProductReport", method = RequestMethod.POST)
   public ResponseResult<List<MachineProductReport>> getMachineProductReport(
       @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
@@ -66,7 +67,7 @@ public class ChartController extends BaseController {
     }
   }
 
-  @ApiOperation("生产线报警")
+  @ApiOperation("生产线报警(15min内)")
   @RequestMapping(value = "/productLineAlarmReport", method = RequestMethod.POST)
   public ResponseResult<List<ProductLineAlarmReport>> getProductLineAlarmReport(
       @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
@@ -98,14 +99,14 @@ public class ChartController extends BaseController {
     }
   }
 
-  @ApiOperation(" 断刀频率统计(按刀径)")
-  @RequestMapping(value = "/knifeBrokenRepore", method = RequestMethod.POST)
-  public ResponseResult<List<KnifeBrokenRepore>> getKnifeBrokenRepore(
+  @ApiOperation("一周内断刀频率统计(按刀径)")
+  @RequestMapping(value = "/knifeBrokenReporeByDiameter", method = RequestMethod.POST)
+  public ResponseResult<List<KnifeBrokenReporeByDiameter>> getKnifeBrokenReporeByDiameter(
       @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
     try {
-      List<KnifeBrokenRepore> knifeBrokenReporeList = chartService
-          .getKnifeBrokenRepore(productLine);
-      return RestResultGenerator.genResult(knifeBrokenReporeList);
+      List<KnifeBrokenReporeByDiameter> knifeBrokenReporeByDiameterList = chartService
+          .getKnifeBrokenReporeByDiameter(productLine);
+      return RestResultGenerator.genResult(knifeBrokenReporeByDiameterList);
     } catch (GlobalErrorInfoException e) {
       throw e;
     } catch (Exception e) {
@@ -114,7 +115,23 @@ public class ChartController extends BaseController {
     }
   }
 
-  @ApiOperation(" 生产线生产统计")
+  @ApiOperation("一周内断刀频率统计(按刀位)")
+  @RequestMapping(value = "/knifeBrokenReporeByPosition", method = RequestMethod.POST)
+  public ResponseResult<List<KnifeBrokenReporeByPosition>> getKnifeBrokenReporeByPosition(
+          @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
+    try {
+      List<KnifeBrokenReporeByPosition> knifeBrokenReporeByPositionList = chartService
+              .getKnifeBrokenReporeByPosition(productLine);
+      return RestResultGenerator.genResult(knifeBrokenReporeByPositionList);
+    } catch (GlobalErrorInfoException e) {
+      throw e;
+    } catch (Exception e) {
+      logger.error(String.format("Controller >>> 断刀频率统计 接口异常 >>> msg:%S",e.toString()));
+      throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
+    }
+  }
+
+  @ApiOperation("当日生产线生产统计")
   @RequestMapping(value = "/prodLineProdReport", method = RequestMethod.POST)
   public ResponseResult<ProdLineProdReport> getProdLineProdReport(
       @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {

@@ -17,10 +17,10 @@ public class MachineProductReport implements Serializable {
   @ApiModelProperty(value = "机床名称")
   private String machineName;
 
-  @ApiModelProperty(value = "稼动时长")
+  @ApiModelProperty(value = "稼动时长 单位:minute")
   private Long macWorkTime;
 
-  @ApiModelProperty(value = "加工件数")
+  @ApiModelProperty(value = "加工件数 单位:件")
   private Integer macProdNum;
 
   public Integer getRank() {

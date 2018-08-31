@@ -11,7 +11,7 @@ import java.io.Serializable;
 @ApiModel(description = "生产线信息")
 public class ProductLineDTO implements Serializable {
 
-  @ApiModelProperty(value = "产线",required = true,example = "B")
+  @ApiModelProperty(value = "产线",required = true,example = "C")
   private String productionLine;
 
   @ApiModelProperty(value = "车间",required = true,example = "A栋")

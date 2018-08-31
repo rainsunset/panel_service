@@ -14,11 +14,14 @@ public class ProdLineProdReport implements Serializable {
   @ApiModelProperty(value = "产线",example = "B")
   private String productionLine;
 
-  @ApiModelProperty(value = "产线生产产品数")
+  @ApiModelProperty(value = "生产数")
   private Integer prodLineProdNum;
 
-  @ApiModelProperty(value = "产线计划生产产品数")
+  @ApiModelProperty(value = "今日计划生产数")
   private Integer plannedProduction;
+
+  @ApiModelProperty(value = "完工率")
+  private Integer prodLineProdPercent;
 
   public String getProductionLine() {
     return productionLine;
@@ -42,5 +45,13 @@ public class ProdLineProdReport implements Serializable {
 
   public void setPlannedProduction(Integer plannedProduction) {
     this.plannedProduction = plannedProduction;
+  }
+
+  public Integer getProdLineProdPercent() {
+    return prodLineProdPercent;
+  }
+
+  public void setProdLineProdPercent(Integer prodLineProdPercent) {
+    this.prodLineProdPercent = prodLineProdPercent;
   }
 }
