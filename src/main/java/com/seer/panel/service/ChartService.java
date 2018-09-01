@@ -6,6 +6,8 @@ import com.seer.panel.model.MachineProductReport;
 import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.model.ProductLineAlarmReport;
 import com.seer.panel.model.ProductLineMachineStatusReport;
+import com.seer.panel.view.EchartBarOrLineVO;
+import com.seer.panel.view.EchartPieVO;
 import com.seer.panel.view.MachineLifencyWarningReportVO;
 import com.seer.panel.view.ProductLineDTO;
 import java.util.List;
@@ -20,7 +22,7 @@ public interface ChartService {
    * @param productLine
    * @return
    */
-  public List<MachineProductReport> getMachineProductReport(ProductLineDTO productLine) throws Exception;
+  public EchartBarOrLineVO getMachineProductReport(ProductLineDTO productLine) throws Exception;
 
   /**
    * 机器实时状态
@@ -48,14 +50,14 @@ public interface ChartService {
    * @param productLine
    * @return
    */
-  public List<KnifeBrokenReportByDiameter> getKnifeBrokenReportByDiameter(ProductLineDTO productLine) throws Exception;
+  public EchartBarOrLineVO getKnifeBrokenReportByDiameter(ProductLineDTO productLine) throws Exception;
 
   /**
    * 断刀频率统计(按刀径)
    * @param productLine
    * @return
    */
-  public List<KnifeBrokenReportByPosition> getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception;
+  public EchartPieVO getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception;
 
   /**
    * 生产线生产统计

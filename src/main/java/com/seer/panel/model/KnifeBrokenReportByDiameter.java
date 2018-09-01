@@ -18,7 +18,7 @@ public class KnifeBrokenReportByDiameter implements Serializable {
   private String knifeDiameter;
 
   @ApiModelProperty(value = "断刀数量")
-  private String brokenNum;
+  private Integer brokenNum;
 
   public String getProductionLine() {
     return productionLine;
@@ -36,11 +36,11 @@ public class KnifeBrokenReportByDiameter implements Serializable {
     this.knifeDiameter = knifeDiameter;
   }
 
-  public String getBrokenNum() {
+  public Integer getBrokenNum() {
     return brokenNum;
   }
 
-  public void setBrokenNum(String brokenNum) {
+  public void setBrokenNum(Integer brokenNum) {
     this.brokenNum = brokenNum;
   }
 }

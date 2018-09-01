@@ -14,6 +14,8 @@ import com.seer.panel.model.ProductLineAlarmReport;
 import com.seer.panel.model.ProductLineInfo;
 import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.service.ChartService;
+import com.seer.panel.view.EchartBarOrLineVO;
+import com.seer.panel.view.EchartPieVO;
 import com.seer.panel.view.MachineLifencyWarningReportVO;
 import com.seer.panel.view.ProductLineDTO;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * @autheor ligw
@@ -42,15 +45,31 @@ public class ChartServiceImpl extends BaseService implements ChartService {
   private Integer plannedProduction;
 
   @Override
-  public List<MachineProductReport> getMachineProductReport(ProductLineDTO productLine) throws Exception {
-    List<MachineProductReport> machineProductReport = null;
+  public EchartBarOrLineVO getMachineProductReport(ProductLineDTO productLine) throws Exception {
+    EchartBarOrLineVO echartBarOrLineVO = new EchartBarOrLineVO();
+    echartBarOrLineVO.setyAxisname("分钟(min)");
+    List<MachineProductReport> machineProductReportList = null;
     try {
-      machineProductReport = chartMapper.getMachineProductReport(productLine);
+      machineProductReportList = chartMapper.getMachineProductReport(productLine);
     } catch (Exception e) {
       logger.error(String.format("获取机床稼动率排行异常 >>> 异常信息:%S",e.toString()));
       throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
     }
-    return machineProductReport;
+    if (CollectionUtils.isEmpty(machineProductReportList)) {
+      return echartBarOrLineVO;
+    }
+    List<Integer> seriesData = new ArrayList<>();
+    List<String> xAxisData = new ArrayList<>();
+    for (MachineProductReport machineProductReport:machineProductReportList){
+      if (StringUtils.isEmpty(machineProductReport.getMachineName())){
+        continue;
+      }
+      seriesData.add((null == machineProductReport.getMacWorkTime()) ? 0 : machineProductReport.getMacWorkTime());
+      xAxisData.add(machineProductReport.getMachineName());
+    }
+    echartBarOrLineVO.setxAxisData(xAxisData);
+    echartBarOrLineVO.addSeriesData(seriesData);
+    return echartBarOrLineVO;
   }
 
   @Override
@@ -127,27 +146,59 @@ public class ChartServiceImpl extends BaseService implements ChartService {
   }
 
   @Override
-  public List<KnifeBrokenReportByDiameter> getKnifeBrokenReportByDiameter(ProductLineDTO productLine) throws Exception {
-    List<KnifeBrokenReportByDiameter> knifeBrokenReportByDiameters = null;
+  public EchartBarOrLineVO getKnifeBrokenReportByDiameter(ProductLineDTO productLine) throws Exception {
+    EchartBarOrLineVO echartBarOrLineVO = new EchartBarOrLineVO();
+    echartBarOrLineVO.setyAxisname("单位（次）");
+    List<KnifeBrokenReportByDiameter> knifeBrokenReportByDiameterList = null;
     try {
-      knifeBrokenReportByDiameters = chartMapper.getKnifeBrokenReportByDiameter(productLine);
+      knifeBrokenReportByDiameterList = chartMapper.getKnifeBrokenReportByDiameter(productLine);
     } catch (Exception e) {
       logger.error(String.format("断刀频率统计(按刀径) >>> 异常信息:%S",e.toString()));
       throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
     }
-    return knifeBrokenReportByDiameters;
+    if (CollectionUtils.isEmpty(knifeBrokenReportByDiameterList)){
+      return echartBarOrLineVO;
+    }
+    List<String> xAxisData = new ArrayList<>();
+    List<Integer> serieData = new ArrayList<>();
+    for (KnifeBrokenReportByDiameter knifeBrokenReportByDiameter : knifeBrokenReportByDiameterList) {
+      if (StringUtils.isEmpty(knifeBrokenReportByDiameter.getKnifeDiameter())){
+        continue;
+      }
+      xAxisData.add(knifeBrokenReportByDiameter.getKnifeDiameter());
+      serieData.add((null == knifeBrokenReportByDiameter.getBrokenNum()) ? 0
+              : knifeBrokenReportByDiameter.getBrokenNum());
+    }
+    echartBarOrLineVO.setxAxisData(xAxisData);
+    echartBarOrLineVO.addSeriesData(serieData);
+    return echartBarOrLineVO;
   }
 
   @Override
-  public List<KnifeBrokenReportByPosition> getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception {
-    List<KnifeBrokenReportByPosition> knifeBrokenReportByPositions = null;
+  public EchartPieVO getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception {
+    EchartPieVO echartPieVO = new EchartPieVO();
+    List<KnifeBrokenReportByPosition> knifeBrokenReportByPositionList = null;
     try {
-      knifeBrokenReportByPositions = chartMapper.getKnifeBrokenReportByPosition(productLine);
+      knifeBrokenReportByPositionList = chartMapper.getKnifeBrokenReportByPosition(productLine);
     } catch (Exception e) {
-      logger.error(String.format("断刀频率统计(按刀径) >>> 异常信息:%S",e.toString()));
+      logger.error(String.format("断刀频率统计(按刀位) >>> 异常信息:%S",e.toString()));
       throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
     }
-    return knifeBrokenReportByPositions;
+    if (CollectionUtils.isEmpty(knifeBrokenReportByPositionList)) {
+      return echartPieVO;
+    }
+    List<Map<String, Object>> serieDatas = new ArrayList<>();
+    for (KnifeBrokenReportByPosition knifeBrokenReportByPosition : knifeBrokenReportByPositionList) {
+      if (null == knifeBrokenReportByPosition.getKnifeNum()) {
+        continue;
+      }
+      Map<String, Object> serieData = new HashMap<>();
+      serieData.put("name",knifeBrokenReportByPosition.getKnifeNum());
+      serieData.put("value",(null == knifeBrokenReportByPosition.getBrokenNum()) ? 0 : knifeBrokenReportByPosition.getBrokenNum());
+      serieDatas.add(serieData);
+    }
+    echartPieVO.addSerie(serieDatas);
+    return echartPieVO;
   }
 
   @Override

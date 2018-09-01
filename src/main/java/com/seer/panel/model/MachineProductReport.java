@@ -18,7 +18,7 @@ public class MachineProductReport implements Serializable {
   private String machineName;
 
   @ApiModelProperty(value = "稼动时长 单位:minute")
-  private Long macWorkTime;
+  private Integer macWorkTime;
 
   @ApiModelProperty(value = "加工件数 单位:件")
   private Integer macProdNum;
@@ -39,11 +39,11 @@ public class MachineProductReport implements Serializable {
     this.machineName = machineName;
   }
 
-  public Long getMacWorkTime() {
+  public Integer getMacWorkTime() {
     return macWorkTime;
   }
 
-  public void setMacWorkTime(Long macWorkTime) {
+  public void setMacWorkTime(Integer macWorkTime) {
     this.macWorkTime = macWorkTime;
   }
 

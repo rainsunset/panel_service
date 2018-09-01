@@ -10,6 +10,8 @@ import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.model.ProductLineAlarmReport;
 import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.service.ChartService;
+import com.seer.panel.view.EchartBarOrLineVO;
+import com.seer.panel.view.EchartPieVO;
 import com.seer.panel.view.MachineLifencyWarningReportVO;
 import com.seer.panel.view.ProductLineDTO;
 import com.seer.panel.view.ResponseResult;
@@ -37,10 +39,10 @@ public class ChartController extends BaseController {
 
   @ApiOperation("一周内机床稼动时长排行 生产数")
   @RequestMapping(value = "/machineProductReport", method = RequestMethod.POST)
-  public ResponseResult<List<MachineProductReport>> getMachineProductReport(
+  public ResponseResult<EchartBarOrLineVO> getMachineProductReport(
       @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
     try {
-      List<MachineProductReport> machineProductReportList = chartService
+      EchartBarOrLineVO machineProductReportList = chartService
           .getMachineProductReport(productLine);
       return RestResultGenerator.genResult(machineProductReportList);
     } catch (GlobalErrorInfoException e) {
@@ -101,10 +103,10 @@ public class ChartController extends BaseController {
 
   @ApiOperation("一周内断刀频率统计(按刀径)")
   @RequestMapping(value = "/knifeBrokenReportByDiameter", method = RequestMethod.POST)
-  public ResponseResult<List<KnifeBrokenReportByDiameter>> getKnifeBrokenReportByDiameter(
+  public ResponseResult<EchartBarOrLineVO> getKnifeBrokenReportByDiameter(
       @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
     try {
-      List<KnifeBrokenReportByDiameter> knifeBrokenReportByDiameterList = chartService
+      EchartBarOrLineVO knifeBrokenReportByDiameterList = chartService
           .getKnifeBrokenReportByDiameter(productLine);
       return RestResultGenerator.genResult(knifeBrokenReportByDiameterList);
     } catch (GlobalErrorInfoException e) {
@@ -117,10 +119,10 @@ public class ChartController extends BaseController {
 
   @ApiOperation("一周内断刀频率统计(按刀位)")
   @RequestMapping(value = "/knifeBrokenReportByPosition", method = RequestMethod.POST)
-  public ResponseResult<List<KnifeBrokenReportByPosition>> getKnifeBrokenReportByPosition(
+  public ResponseResult<EchartPieVO> getKnifeBrokenReportByPosition(
           @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
     try {
-      List<KnifeBrokenReportByPosition> knifeBrokenReportByPositionList = chartService
+      EchartPieVO knifeBrokenReportByPositionList = chartService
               .getKnifeBrokenReportByPosition(productLine);
       return RestResultGenerator.genResult(knifeBrokenReportByPositionList);
     } catch (GlobalErrorInfoException e) {

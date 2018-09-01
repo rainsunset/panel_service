@@ -15,7 +15,7 @@ public class KnifeBrokenReportByPosition implements Serializable {
 	private String knifeNum;
 
 	@ApiModelProperty(value = "断刀数量")
-	private String brokenNum;
+	private Integer brokenNum;
 
 	public String getProductionLine() {
 		return productionLine;
@@ -33,11 +33,11 @@ public class KnifeBrokenReportByPosition implements Serializable {
 		this.knifeNum = knifeNum;
 	}
 
-	public String getBrokenNum() {
+	public Integer getBrokenNum() {
 		return brokenNum;
 	}
 
-	public void setBrokenNum(String brokenNum) {
+	public void setBrokenNum(Integer brokenNum) {
 		this.brokenNum = brokenNum;
 	}
 }
