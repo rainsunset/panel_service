@@ -15,8 +15,8 @@ import com.seer.panel.model.ProductLineInfo;
 import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.service.ChartService;
 import com.seer.panel.view.EchartBarOrLineVO;
+import com.seer.panel.view.EchartHeatmapVO;
 import com.seer.panel.view.EchartPieVO;
-import com.seer.panel.view.MachineLifencyWarningReportVO;
 import com.seer.panel.view.ProductLineDTO;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -106,8 +106,9 @@ public class ChartServiceImpl extends BaseService implements ChartService {
   }
 
   @Override
-  public List<MachineLifencyWarningReportVO> getMachineLifencyWarningReport(ProductLineDTO productLine)
+  public EchartHeatmapVO getMachineLifencyWarningReport(ProductLineDTO productLine)
       throws Exception {
+    EchartHeatmapVO echartHeatmapVO = new EchartHeatmapVO();
     List<KnifeLifencyWarningReport> knifeLifencyWarningReportList = null;
     try {
       knifeLifencyWarningReportList = chartMapper.getKnifeLifencyWarningReport(productLine);
@@ -116,33 +117,51 @@ public class ChartServiceImpl extends BaseService implements ChartService {
       throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
     }
     if (CollectionUtils.isEmpty(knifeLifencyWarningReportList)){
-      return null;
+      return echartHeatmapVO;
     }
+    //整理分组
+    List<String> machineNameList = new ArrayList<>();
+    List<String> knifePositionList = new ArrayList<>();
+    Map<String, Integer> machineNameMap = new HashMap<>();
+    Map<String, Integer> knifePositionMap = new HashMap<>();
+    int x = 0;
+    int y = 0;
     // 结果分组
-    Map<String, List<KnifeLifencyWarningReport>> KnifeLifencyWarningReportCollect = new HashMap<>();
     for (KnifeLifencyWarningReport knifeLifencyWarningReport : knifeLifencyWarningReportList) {
+      String machineName = knifeLifencyWarningReport.getMachineName();
+      String knifePosition = knifeLifencyWarningReport.getKnifePosition();
+      if (StringUtils.isEmpty(machineName) || StringUtils.isEmpty(knifePosition)){
+        continue;
+      }
       if (null == knifeLifencyWarningReport.getTotalCount() || 1 > knifeLifencyWarningReport.getTotalCount()) {
         knifeLifencyWarningReport.setTotalCount(knifeDefaultLife);
       }
-      String machineName = knifeLifencyWarningReport.getMachineName();
-      List<KnifeLifencyWarningReport> list = KnifeLifencyWarningReportCollect.get(machineName);
-      if (CollectionUtils.isEmpty(list)){
-        list = new ArrayList<KnifeLifencyWarningReport>();
-        list.add(knifeLifencyWarningReport);
-        KnifeLifencyWarningReportCollect.put(machineName, list);
-      } else {
-        list.add(knifeLifencyWarningReport);
+      Integer machineNameNo = machineNameMap.get(machineName);
+      if (null == machineNameNo){
+        machineNameList.add(machineName);
+        machineNameNo = x;
+        machineNameMap.put(machineName, x++);
       }
+      Integer knifePositionNo = knifePositionMap.get(knifePosition);
+      if (null == knifePositionMap.get(knifePosition)){
+        knifePositionList.add(knifePosition);
+        knifePositionNo = y;
+        knifePositionMap.put(knifePosition, y++);
+      }
+      Integer currentCount =
+              (null == knifeLifencyWarningReport.getCurrentCount() || 0 > knifeLifencyWarningReport
+                      .getCurrentCount())
+                      ? 0 : knifeLifencyWarningReport.getCurrentCount();
+      Integer totakCount =
+              (null == knifeLifencyWarningReport.getTotalCount() || 0 > knifeLifencyWarningReport
+                      .getTotalCount())
+                      ? 0 : knifeLifencyWarningReport.getTotalCount();
+      Integer surplusCount = (0 > totakCount - currentCount) ? 0 : (totakCount - currentCount);
+      echartHeatmapVO.addData(knifePositionNo,machineNameNo,surplusCount);
     }
-    //整理分组
-    List<MachineLifencyWarningReportVO> machineLifencyWarningReportVOList = new ArrayList<>();
-    for (Map.Entry<String, List<KnifeLifencyWarningReport>> entry : KnifeLifencyWarningReportCollect.entrySet()) {
-      MachineLifencyWarningReportVO machineLifencyWarningReportVO = new MachineLifencyWarningReportVO();
-      machineLifencyWarningReportVO.setMachineName(entry.getKey());
-      machineLifencyWarningReportVO.setKnifeLifencyList(entry.getValue());
-      machineLifencyWarningReportVOList.add(machineLifencyWarningReportVO);
-    }
-    return machineLifencyWarningReportVOList;
+    echartHeatmapVO.setHours(machineNameList);
+    echartHeatmapVO.setDays(knifePositionList);
+    return echartHeatmapVO;
   }
 
   @Override

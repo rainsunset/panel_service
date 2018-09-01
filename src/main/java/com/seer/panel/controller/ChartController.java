@@ -11,8 +11,8 @@ import com.seer.panel.model.ProductLineAlarmReport;
 import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.service.ChartService;
 import com.seer.panel.view.EchartBarOrLineVO;
+import com.seer.panel.view.EchartHeatmapVO;
 import com.seer.panel.view.EchartPieVO;
-import com.seer.panel.view.MachineLifencyWarningReportVO;
 import com.seer.panel.view.ProductLineDTO;
 import com.seer.panel.view.ResponseResult;
 import com.seer.panel.view.RestResultGenerator;
@@ -87,10 +87,10 @@ public class ChartController extends BaseController {
 
   @ApiOperation(" 刀具寿命报警")
   @RequestMapping(value = "/machineLifencyWarningReport", method = RequestMethod.POST)
-  public ResponseResult<List<MachineLifencyWarningReportVO>> getMachineLifencyWarningReport(
+  public ResponseResult<EchartHeatmapVO> getMachineLifencyWarningReport(
       @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
     try {
-      List<MachineLifencyWarningReportVO> machineLifencyWarningReportVOList = chartService
+      EchartHeatmapVO machineLifencyWarningReportVOList = chartService
           .getMachineLifencyWarningReport(productLine);
       return RestResultGenerator.genResult(machineLifencyWarningReportVOList);
     } catch (GlobalErrorInfoException e) {

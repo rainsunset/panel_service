@@ -1,10 +1,7 @@
 package com.seer.panel.view;
 
-import com.seer.panel.view.EchartPieVO.Serie.SerieData;
-import io.swagger.models.auth.In;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,10 +38,6 @@ public class EchartPieVO implements Serializable {
 
 		public List<SerieData> getData() {
 			return data;
-		}
-
-		public void setData(List<SerieData> data) {
-			this.data = data;
 		}
 
 		public Serie() {}

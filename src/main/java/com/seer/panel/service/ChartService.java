@@ -7,8 +7,8 @@ import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.model.ProductLineAlarmReport;
 import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.view.EchartBarOrLineVO;
+import com.seer.panel.view.EchartHeatmapVO;
 import com.seer.panel.view.EchartPieVO;
-import com.seer.panel.view.MachineLifencyWarningReportVO;
 import com.seer.panel.view.ProductLineDTO;
 import java.util.List;
 
@@ -43,7 +43,7 @@ public interface ChartService {
    * @param productLine
    * @return
    */
-  public List<MachineLifencyWarningReportVO> getMachineLifencyWarningReport(ProductLineDTO productLine) throws Exception;
+  public EchartHeatmapVO getMachineLifencyWarningReport(ProductLineDTO productLine) throws Exception;
 
   /**
    * 断刀频率统计(按刀径)
