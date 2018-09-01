@@ -1,21 +1,25 @@
 server:
-  port: 8081
+  port: 8084
   name: prodPanel
-
-#自定义参数
-demoprop:
-  name: ${server.name}
-  sex: ${random.int[0,1]}
-
 #产线参数
 prodProp:
   knifeDefaultLife: 5000
   plannedProduction: 800
 spring:
-    datasource:
-        url: jdbc:sqlserver://localhost:1433;DatabaseName=seerbigdata
-        username: sa
-        password : root
+  datasource:
+      druid:
+          db1:
+              url: jdbc:sqlserver://localhost:1433;DatabaseName=seerbigdata
+              username: sa
+              password : root
+          db2:
+              url: jdbc:mysql://localhost:3306/demo
+              username: root
+              password: root
+#          db3:
+#              url: jdbc:oracle:thin:@192.168.136.222:ORCL
+#              username: sa
+#              password: sa123456
 info:
   service-info: production panel service
   api-doc: /swagger-ui.html

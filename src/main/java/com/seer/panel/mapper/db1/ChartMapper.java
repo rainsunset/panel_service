@@ -1,4 +1,4 @@
-package com.seer.panel.mapper;
+package com.seer.panel.mapper.db1;
 
 import com.seer.panel.model.KnifeBrokenReportByDiameter;
 import com.seer.panel.model.KnifeBrokenReportByPosition;

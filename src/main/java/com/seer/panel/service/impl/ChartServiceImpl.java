@@ -1,9 +1,12 @@
 package com.seer.panel.service.impl;
 
+import com.seer.panel.annotation.DataSource;
 import com.seer.panel.common.BaseService;
+import com.seer.panel.config.db.DataSourceContextHolder;
+import com.seer.panel.config.db.DataSourceEnum;
 import com.seer.panel.exception.GlobalErrorInfoEnum;
 import com.seer.panel.exception.GlobalErrorInfoException;
-import com.seer.panel.mapper.ChartMapper;
+import com.seer.panel.mapper.db1.ChartMapper;
 import com.seer.panel.model.KnifeBrokenReportByDiameter;
 import com.seer.panel.model.KnifeBrokenReportByPosition;
 import com.seer.panel.model.KnifeLifencyWarningReport;
@@ -24,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -49,6 +53,7 @@ public class ChartServiceImpl extends BaseService implements ChartService {
     EchartBarOrLineVO echartBarOrLineVO = new EchartBarOrLineVO();
     echartBarOrLineVO.setyAxisname("分钟(min)");
     List<MachineProductReport> machineProductReportList = null;
+    System.out.println(DataSourceContextHolder.getDbType());
     try {
       machineProductReportList = chartMapper.getMachineProductReport(productLine);
     } catch (Exception e) {
