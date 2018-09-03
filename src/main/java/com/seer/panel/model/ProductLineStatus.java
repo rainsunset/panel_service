@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @date 2018/8/24 10:15
  */
 @ApiModel(description = "生产线机床状态统计")
-public class ProductLineInfo {
+public class ProductLineStatus {
 
   @ApiModelProperty(value = "显示标题", example = "A栋C产线(18台)")
   private String title;

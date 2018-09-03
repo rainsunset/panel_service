@@ -16,7 +16,7 @@ public class ProductLineMachineStatusReport implements Serializable {
   private List<MachineInfo> machineInfoList;
 
   @ApiModelProperty(value = "生产线机床状态统计")
-  private ProductLineInfo productLineInfo;
+  private ProductLineStatus productLineStatus;
 
   public List<MachineInfo> getMachineInfoList() {
     return machineInfoList;
@@ -27,12 +27,12 @@ public class ProductLineMachineStatusReport implements Serializable {
     this.machineInfoList = machineInfoList;
   }
 
-  public ProductLineInfo getProductLineInfo() {
-    return productLineInfo;
+  public ProductLineStatus getProductLineStatus() {
+    return productLineStatus;
   }
 
-  public void setProductLineInfo(
-      ProductLineInfo productLineInfo) {
-    this.productLineInfo = productLineInfo;
+  public void setProductLineStatus(
+      ProductLineStatus productLineStatus) {
+    this.productLineStatus = productLineStatus;
   }
 }

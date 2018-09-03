@@ -1,5 +1,6 @@
 package com.seer.panel.mapper.db1;
 
+import com.seer.panel.model.FactoryProductLine;
 import com.seer.panel.model.KnifeBrokenReportByDiameter;
 import com.seer.panel.model.KnifeBrokenReportByPosition;
 import com.seer.panel.model.KnifeLifencyWarningReport;
@@ -15,6 +16,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ChartMapper {
+
+  /**
+   * 工厂产线信息
+   * @return
+   */
+  List<FactoryProductLine> getFactoryProductLine();
 
   /**
    * 机床稼动率排行 生产数

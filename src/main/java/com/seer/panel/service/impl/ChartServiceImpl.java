@@ -7,6 +7,7 @@ import com.seer.panel.exception.GlobalErrorInfoEnum;
 import com.seer.panel.exception.GlobalErrorInfoException;
 import com.seer.panel.mapper.db1.ChartMapper;
 import com.seer.panel.mapper.db2.MesInfoMapper;
+import com.seer.panel.model.FactoryProductLine;
 import com.seer.panel.model.KnifeBrokenReportByDiameter;
 import com.seer.panel.model.KnifeBrokenReportByPosition;
 import com.seer.panel.model.KnifeLifencyWarningReport;
@@ -14,12 +15,11 @@ import com.seer.panel.model.MachineInfo;
 import com.seer.panel.model.MachineProductReport;
 import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.model.ProductLineAlarmReport;
-import com.seer.panel.model.ProductLineInfo;
+import com.seer.panel.model.ProductLineStatus;
 import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.service.ChartService;
 import com.seer.panel.view.EchartBarOrLineVO;
 import com.seer.panel.view.EchartHeatmapVO;
-import com.seer.panel.view.EchartPieVO;
 import com.seer.panel.view.EchartRadarVO;
 import com.seer.panel.view.ProductLineDTO;
 import com.seer.panel.view.ProductionDirectorVO;
@@ -51,6 +51,18 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 
   @Autowired
   private MesInfoMapper mesInfoMapper;
+
+  @Override
+  public List<FactoryProductLine> getFactoryProductLine() {
+    List<FactoryProductLine> factoryProductLineList = null;
+    try {
+      factoryProductLineList = chartMapper.getFactoryProductLine();
+    } catch (Exception e) {
+      logger.error(String.format("工厂产线信息 >>> 异常信息:%S",e.toString()));
+      throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
+    }
+    return factoryProductLineList;
+  }
 
   @Override
   public EchartBarOrLineVO getMachineProductReport(ProductLineDTO productLine) throws Exception {
@@ -93,10 +105,10 @@ public class ChartServiceImpl extends BaseService implements ChartService {
       throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
     }
       List<MachineInfo> machineInfoList = (List<MachineInfo>) results.get(0);
-      List<ProductLineInfo> productLineInfoList = (List<ProductLineInfo>) results.get(1);
+      List<ProductLineStatus> productLineStatusList = (List<ProductLineStatus>) results.get(1);
       productLineMachineStatusReport.setMachineInfoList(machineInfoList);
-      if (!CollectionUtils.isEmpty(productLineInfoList)){
-        productLineMachineStatusReport.setProductLineInfo(productLineInfoList.get(0));
+      if (!CollectionUtils.isEmpty(productLineStatusList)){
+        productLineMachineStatusReport.setProductLineStatus(productLineStatusList.get(0));
       }
     return productLineMachineStatusReport;
   }
@@ -238,15 +250,15 @@ public class ChartServiceImpl extends BaseService implements ChartService {
   @Override
   public ProdLineProdReport getProdLineProdReport(ProductLineDTO productLineDTO) throws Exception {
     //TODO NEED REWRITE
-    ProdLineProdReport prodLineProdReport = new ProdLineProdReport();
-    prodLineProdReport.setProductionLine(productLineDTO.getProductionLine());
-    try {
-      prodLineProdReport.setProdLineProdNum(chartMapper.getProdLineProdReport(productLineDTO));
-    } catch (Exception e) {
-      logger.error(String.format(" 生产线生产统计 >>> 异常信息:%S",e.toString()));
-      throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
-    }
-    prodLineProdReport.setPlannedProduction(plannedProduction);
+    ProdLineProdReport prodLineProdReport = null;
+//    prodLineProdReport.setProductionLine(productLineDTO.getProductionLine());
+//    try {
+//      prodLineProdReport.setProdLineProdNum(chartMapper.getProdLineProdReport(productLineDTO));
+//    } catch (Exception e) {
+//      logger.error(String.format(" 生产线生产统计 >>> 异常信息:%S",e.toString()));
+//      throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
+//    }
+//    prodLineProdReport.setPlannedProduction(plannedProduction);
     try {
         prodLineProdReport = mesInfoMapper.getProdLineProdReport();
     } catch (Exception e) {

@@ -3,16 +3,13 @@ package com.seer.panel.controller;
 import com.seer.panel.common.BaseController;
 import com.seer.panel.exception.GlobalErrorInfoEnum;
 import com.seer.panel.exception.GlobalErrorInfoException;
-import com.seer.panel.model.KnifeBrokenReportByDiameter;
-import com.seer.panel.model.KnifeBrokenReportByPosition;
-import com.seer.panel.model.MachineProductReport;
+import com.seer.panel.model.FactoryProductLine;
 import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.model.ProductLineAlarmReport;
 import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.service.ChartService;
 import com.seer.panel.view.EchartBarOrLineVO;
 import com.seer.panel.view.EchartHeatmapVO;
-import com.seer.panel.view.EchartPieVO;
 import com.seer.panel.view.EchartRadarVO;
 import com.seer.panel.view.ProductLineDTO;
 import com.seer.panel.view.ProductionDirectorVO;
@@ -38,6 +35,20 @@ public class ChartController extends BaseController {
 
   @Autowired
   private ChartService chartService;
+
+  @ApiOperation("工厂产线信息")
+  @RequestMapping(value = "/factoryProductLine", method = RequestMethod.POST)
+  public ResponseResult<List<FactoryProductLine>> getFactoryProductLine() throws GlobalErrorInfoException {
+    try {
+      List<FactoryProductLine> factoryProductLineList = chartService.getFactoryProductLine();
+      return RestResultGenerator.genResult(factoryProductLineList);
+    } catch (GlobalErrorInfoException e) {
+      throw e;
+    } catch (Exception e) {
+      logger.error(String.format("Controller >>> 工厂产线信息 接口异常 >>> msg:%S",e.toString()));
+      throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
+    }
+  }
 
   @ApiOperation("一周内机床稼动时长排行 生产数")
   @RequestMapping(value = "/machineProductReport", method = RequestMethod.POST)

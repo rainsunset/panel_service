@@ -1,14 +1,11 @@
 package com.seer.panel.service;
 
-import com.seer.panel.model.KnifeBrokenReportByDiameter;
-import com.seer.panel.model.KnifeBrokenReportByPosition;
-import com.seer.panel.model.MachineProductReport;
+import com.seer.panel.model.FactoryProductLine;
 import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.model.ProductLineAlarmReport;
 import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.view.EchartBarOrLineVO;
 import com.seer.panel.view.EchartHeatmapVO;
-import com.seer.panel.view.EchartPieVO;
 import com.seer.panel.view.EchartRadarVO;
 import com.seer.panel.view.ProductLineDTO;
 import com.seer.panel.view.ProductionDirectorVO;
@@ -19,6 +16,12 @@ import java.util.List;
  * @date 2018/8/23 21:09
  */
 public interface ChartService {
+
+  /**
+   * 工厂产线信息
+   * @return
+   */
+  List<FactoryProductLine> getFactoryProductLine();
   /**
    * 机床稼动率排行 生产数
    * @param productLine

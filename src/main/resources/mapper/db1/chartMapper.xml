@@ -13,7 +13,7 @@
     <result column="occurrenceTime" property="occurrenceTime" jdbcType="VARCHAR"/>
   </resultMap>
 
-  <resultMap id="productLineInfo" type="com.seer.panel.model.ProductLineInfo">
+  <resultMap id="productLineStatus" type="com.seer.panel.model.ProductLineStatus">
     <result column="title" property="title" jdbcType="VARCHAR"/>
     <result column="stop" property="stop" jdbcType="INTEGER"/>
     <result column="runing" property="runing" jdbcType="INTEGER"/>
@@ -21,6 +21,13 @@
     <result column="alarm" property="alarm" jdbcType="INTEGER"/>
   </resultMap>
 
+  <!--产线机床信息-->
+  <select id="getFactoryProductLine" resultType="com.seer.panel.model.FactoryProductLine">
+    SELECT mac.factory ,mac.worksShop ,mac.productionLine ,mac.cncSystem
+    FROM machineinfo mac with(nolock)
+    WHERE mac.useStatus = 1
+    GROUP BY mac.factory ,mac.worksShop ,mac.productionLine ,mac.cncSystem
+  </select>
 
   <!--本周机器稼动时长排行  本周机器生产力-->
   <!--排序 设备名 工作时长(minute) 生产量-->
@@ -41,7 +48,7 @@
 
   <!--产线机床信息-->
   <select id="getProductLineMachineStatusReport" parameterType="com.seer.panel.view.ProductLineDTO"
-    statementType="CALLABLE" resultMap="machineInfoList , productLineInfo">
+    statementType="CALLABLE" resultMap="machineInfoList , productLineStatus">
     exec up_GetLineMachineStatus @cLine = #{productionLine}, @cWorksShop = #{worksShop}
   </select>
 
@@ -58,7 +65,7 @@
       GROUP BY macArm.machineCode ,macArm.alarmMsg ,macArm.knifeNum
     ) macPArm ON mac.machineCode = macPArm.machineCode
     WHERE mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
-    ORDER BY macPArm.occurrenceTime DESC;
+    ORDER BY macPArm.occurrenceTime DESC
   </select>
 
   <!--刀具寿命预警-->
@@ -73,7 +80,7 @@
       WHERE kni.status = 1
     ) macKni ON mac.machineCode = macKni.machineCode
     WHERE mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
-    ORDER BY macKni.machineCode ,macKni.knifePosition;
+    ORDER BY macKni.machineCode ,macKni.knifePosition
   </select>
 
 
