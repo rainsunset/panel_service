@@ -3,7 +3,7 @@ server:
   name: prodPanel
 #产线参数
 prodProp:
-  knifeDefaultLife: 5000
+  knifeDefaultLife: 3000
   plannedProduction: 800
 spring:
   datasource:
@@ -13,9 +13,9 @@ spring:
               username: sa
               password : root
           db2:
-              url: jdbc:oracle:thin:@172.20.170.20:1521/jsutf
-              username: unimax
-              password: unimax
+              url: jdbc:oracle:thin:@localhost:1521/jsutf
+              username: aaa
+              password: aaa
 
 info:
   service-info: production panel service
