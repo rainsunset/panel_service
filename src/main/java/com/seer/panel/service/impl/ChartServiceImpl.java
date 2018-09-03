@@ -135,15 +135,20 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 		Map<String, Object> iCount1 = new HashMap<>();
 		iCount1.put("name", "刀具状态良好");
 		iCount1.put("value", productLineKnifeLifeencyCount.getiCount1());
+		series.add(iCount1);
 		legendData.add("刀具状态良好");
 		Map<String, Object> iCount2 = new HashMap<>();
-		iCount1.put("name", "刀具状态一般");
-		iCount1.put("value", productLineKnifeLifeencyCount.getiCount2());
+		iCount2.put("name", "刀具状态一般");
+		iCount2.put("value", productLineKnifeLifeencyCount.getiCount2());
+		series.add(iCount2);
 		legendData.add("刀具状态一般");
 		Map<String, Object> iCount3 = new HashMap<>();
-		iCount1.put("name", "刀具状态严重");
-		iCount1.put("value", productLineKnifeLifeencyCount.getiCount3());
+		iCount3.put("name", "刀具状态严重");
+		iCount3.put("value", productLineKnifeLifeencyCount.getiCount3());
+		series.add(iCount3);
 		legendData.add("刀具状态严重");
+		echartPieVO.setLegendData(legendData);
+		echartPieVO.addSerie(series);
 		return echartPieVO;
 	}
 
