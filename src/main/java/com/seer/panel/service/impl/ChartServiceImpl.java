@@ -230,7 +230,7 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 			if (StringUtils.isEmpty(knifeBrokenReportByDiameter.getKnifeDiameter())) {
 				continue;
 			}
-			xAxisData.add(knifeBrokenReportByDiameter.getKnifeDiameter());
+			xAxisData.add(knifeBrokenReportByDiameter.getKnifeDiameter().toString());
 			serieData.add((null == knifeBrokenReportByDiameter.getBrokenNum()) ? 0
 					: knifeBrokenReportByDiameter.getBrokenNum());
 		}

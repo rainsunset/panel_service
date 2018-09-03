@@ -67,6 +67,12 @@ public interface ChartMapper {
    */
   public List<KnifeBrokenReportByDiameter> getKnifeBrokenReportByDiameter (ProductLineDTO productLine) throws Exception;
 
+	/**
+	 * 断刀频率统计(按刀位)
+	 * @param productLine
+	 * @return
+	 * @throws Exception
+	 */
   public List<KnifeBrokenReportByPosition> getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception;
 
   /**

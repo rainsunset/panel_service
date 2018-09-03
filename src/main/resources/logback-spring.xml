@@ -6,7 +6,7 @@
   <!-- <springProperty  name="logFilePath" source="logging.path"/> -->
   <property resource="application.yml" />
   <substitutionProperty name="LOG_HOME" value="${logging.path}" />
-  <substitutionProperty name="PROJECT_NAME" value="${spring.application.name}" />
+  <substitutionProperty name="PROJECT_NAME" value="${server.name}" />
   <!--<substitutionProperty name="CUR_NODE" value="${info.node}" />-->
 
   <!-- 日志数据库路径 -->
@@ -58,13 +58,14 @@
       <onMismatch>DENY </onMismatch> -->
     </filter>
   </appender>
+
   <!-- 将日志写入控制台 -->
   <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>
         [ %-5level] [%date{yyyy-MM-dd HH:mm:ss}] %logger{96} [%line] - %msg%n
       </pattern>
-      <!--<charset>utf-8</charset>-->
+      <charset>utf-8</charset>
     </encoder>
   </appender>
   <!-- 将日志写入数据库 -->
@@ -80,7 +81,6 @@
   </appender>  -->
   <!-- spring扩展，分环境配置log信息 -->
   <springProfile name="dev">
-
     <!-- <logger name="sand.dao" level="DEBUG"/> -->
     <!-- <logger name="org.springframework.web" level="INFO"/> -->
     <logger name="org.springboot.sample" level="TRACE" />
