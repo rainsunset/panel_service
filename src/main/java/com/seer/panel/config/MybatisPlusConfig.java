@@ -3,7 +3,6 @@ package com.seer.panel.config;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.seer.panel.config.db.DataSourceEnum;
 import com.seer.panel.config.db.DynamicDataSource;
@@ -13,15 +12,14 @@ import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.context.annotation.Profile;
 
 /**
  * @autheor ligw
@@ -29,7 +27,7 @@ import org.springframework.context.annotation.Profile;
  */
 
 @Configuration
-@MapperScan("com.seer.panel.mapper.db*")
+@MapperScan(value ={"com.seer.panel.mapper.db*"})
 public class MybatisPlusConfig {
 
 	/**
@@ -46,14 +44,14 @@ public class MybatisPlusConfig {
 	/**
 	 * SQL执行效率插件
 	 */
-	@Bean
-	@Profile({"dev","test"})// 设置 dev test 环境开启
-	public PerformanceInterceptor performanceInterceptor() {
-		PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
-		performanceInterceptor.setMaxTime(1000);
-		performanceInterceptor.setFormat(true);
-		return performanceInterceptor;
-	}
+//	@Bean
+//	@Profile({"dev","test"})// 设置 dev test 环境开启
+//	public PerformanceInterceptor performanceInterceptor() {
+//		PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
+//		performanceInterceptor.setMaxTime(1000);
+//		performanceInterceptor.setFormat(true);
+//		return performanceInterceptor;
+//	}
 
 	@Bean(name = "db1")
 	@ConfigurationProperties(prefix = "spring.datasource.druid.db1")
@@ -70,7 +68,7 @@ public class MybatisPlusConfig {
 	/**
 	 * 动态数据源配置
 	 */
-	@Bean
+	@Bean(name ="datasource")
 	@Primary
 	public DataSource multipleDataSource(@Qualifier("db1") DataSource db1,
 			@Qualifier("db2") DataSource db2) {
@@ -86,10 +84,12 @@ public class MybatisPlusConfig {
 	}
 
 	@Bean("sqlSessionFactory")
-	public SqlSessionFactory sqlSessionFactory() throws Exception {
+	@ConfigurationProperties(prefix = "mybatis-plus")
+	@ConfigurationPropertiesBinding()
+	@Primary
+	public MybatisSqlSessionFactoryBean sqlSessionFactory() throws Exception {
 		MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
 		sqlSessionFactory.setDataSource(multipleDataSource(db1(), db2()));
-
 		MybatisConfiguration configuration = new MybatisConfiguration();
 		configuration.setJdbcTypeForNull(JdbcType.NULL);
 		configuration.setMapUnderscoreToCamelCase(true);
@@ -100,7 +100,7 @@ public class MybatisPlusConfig {
 				paginationInterceptor()
 		});
 //        sqlSessionFactory.setGlobalConfig(globalConfiguration());
-		return sqlSessionFactory.getObject();
+		return sqlSessionFactory;
 	}
 
  /*   @Bean

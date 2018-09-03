@@ -1,5 +1,5 @@
 server:
-  port: 8084
+  port: 8081
   name: prodPanel
 #产线参数
 prodProp:
@@ -13,13 +13,10 @@ spring:
               username: sa
               password : root
           db2:
-              url: jdbc:mysql://localhost:3306/demo
-              username: root
-              password: root
-#          db3:
-#              url: jdbc:oracle:thin:@192.168.136.222:ORCL
-#              username: sa
-#              password: sa123456
+              url: jdbc:oracle:thin:@172.20.170.20:1521/jsutf
+              username: unimax
+              password: unimax
+
 info:
   service-info: production panel service
   api-doc: /swagger-ui.html
