@@ -11,6 +11,7 @@ import com.seer.panel.view.EchartHeatmapVO;
 import com.seer.panel.view.EchartPieVO;
 import com.seer.panel.view.EchartRadarVO;
 import com.seer.panel.view.ProductLineDTO;
+import com.seer.panel.view.ProductionDirectorVO;
 import java.util.List;
 
 /**
@@ -67,4 +68,13 @@ public interface ChartService {
    * @throws Exception
    */
   public ProdLineProdReport getProdLineProdReport(ProductLineDTO productLineDTO)throws Exception;
+
+  /**
+   * 生产负责人
+   * @param productLineDTO
+   * @return
+   * @throws Exception
+   */
+  public ProductionDirectorVO getProductionDirector(ProductLineDTO productLineDTO)throws Exception;
+
 }

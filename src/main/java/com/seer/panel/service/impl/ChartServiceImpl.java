@@ -22,6 +22,7 @@ import com.seer.panel.view.EchartHeatmapVO;
 import com.seer.panel.view.EchartPieVO;
 import com.seer.panel.view.EchartRadarVO;
 import com.seer.panel.view.ProductLineDTO;
+import com.seer.panel.view.ProductionDirectorVO;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -223,7 +224,7 @@ public class ChartServiceImpl extends BaseService implements ChartService {
         continue;
       }
       Integer brokenNum = (null == knifeBrokenReportByPosition.getBrokenNum()) ? 0 :knifeBrokenReportByPosition.getBrokenNum();
-      indicatorName.add(knifeNum);
+      indicatorName.add(String.format("%s（%n次）",knifeNum,brokenNum));
       value.add(brokenNum);
       maxValue = Math.max(maxValue, brokenNum);
     }
@@ -253,5 +254,11 @@ public class ChartServiceImpl extends BaseService implements ChartService {
       throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
     }
     return prodLineProdReport;
+  }
+
+  @Override
+  public ProductionDirectorVO getProductionDirector(ProductLineDTO productLineDTO)
+          throws Exception {
+            return null;
   }
 }

@@ -15,6 +15,7 @@ import com.seer.panel.view.EchartHeatmapVO;
 import com.seer.panel.view.EchartPieVO;
 import com.seer.panel.view.EchartRadarVO;
 import com.seer.panel.view.ProductLineDTO;
+import com.seer.panel.view.ProductionDirectorVO;
 import com.seer.panel.view.ResponseResult;
 import com.seer.panel.view.RestResultGenerator;
 import io.swagger.annotations.Api;
@@ -141,6 +142,21 @@ public class ChartController extends BaseController {
     try {
       ProdLineProdReport prodLineProdReport = chartService.getProdLineProdReport(productLine);
       return RestResultGenerator.genResult(prodLineProdReport);
+    } catch (GlobalErrorInfoException e) {
+      throw e;
+    } catch (Exception e) {
+      logger.error(String.format("Controller >>> 断刀频率统计 接口异常 >>> msg:%S",e.toString()));
+      throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
+    }
+  }
+
+  @ApiOperation("生产负责人")
+  @RequestMapping(value = "/productionDirector", method = RequestMethod.POST)
+  public ResponseResult<ProductionDirectorVO> getProductionDirector(
+          @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
+    try {
+      ProductionDirectorVO productionDirector = chartService.getProductionDirector(productLine);
+      return RestResultGenerator.genResult(productionDirector);
     } catch (GlobalErrorInfoException e) {
       throw e;
     } catch (Exception e) {
