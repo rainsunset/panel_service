@@ -15,18 +15,17 @@ import com.seer.panel.model.MachineInfo;
 import com.seer.panel.model.MachineProductReport;
 import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.model.ProductLineAlarmReport;
+import com.seer.panel.model.ProductLineKnifeLifeencyCount;
 import com.seer.panel.model.ProductLineStatus;
 import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.service.ChartService;
 import com.seer.panel.view.EchartBarOrLineVO;
-import com.seer.panel.view.EchartHeatmapVO;
+import com.seer.panel.view.EchartPieVO;
 import com.seer.panel.view.EchartRadarVO;
 import com.seer.panel.view.ProductLineDTO;
 import com.seer.panel.view.ProductionDirectorVO;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -114,6 +113,24 @@ public class ChartServiceImpl extends BaseService implements ChartService {
   }
 
   @Override
+  public EchartPieVO getProductLineKnifeLifeencyCount(
+          ProductLineDTO productLine) throws Exception {
+    List<ProductLineKnifeLifeencyCount> productLineKnifeLifeencyCountList = new ArrayList<>();
+    try {
+      productLineKnifeLifeencyCountList = chartMapper.getProductLineKnifeLifeencyCount(productLine);
+    } catch (Exception e) {
+      logger.error(String.format("刀具寿命统计 异常 >>> 异常信息:%S",e.toString()));
+      throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
+    }
+    if (CollectionUtils.isEmpty(productLineKnifeLifeencyCountList)) {
+      return null;
+    }
+    EchartPieVO echartPieVO = new EchartPieVO();
+    // TODO 转化成饼图
+    return echartPieVO;
+  }
+
+  @Override
   public List<ProductLineAlarmReport> getProductLineAlarmReport(ProductLineDTO productLine)
       throws Exception {
     List<ProductLineAlarmReport> productLineAlarmReportList = null;
@@ -127,9 +144,9 @@ public class ChartServiceImpl extends BaseService implements ChartService {
   }
 
   @Override
-  public EchartHeatmapVO getMachineLifencyWarningReport(ProductLineDTO productLine)
+  public EchartBarOrLineVO getMachineLifencyWarningReport(ProductLineDTO productLine)
       throws Exception {
-    EchartHeatmapVO echartHeatmapVO = new EchartHeatmapVO();
+    EchartBarOrLineVO echartBarOrLineVO = new EchartBarOrLineVO();
     List<KnifeLifencyWarningReport> knifeLifencyWarningReportList = null;
     try {
       knifeLifencyWarningReportList = chartMapper.getKnifeLifencyWarningReport(productLine);
@@ -138,34 +155,16 @@ public class ChartServiceImpl extends BaseService implements ChartService {
       throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
     }
     if (CollectionUtils.isEmpty(knifeLifencyWarningReportList)){
-      return echartHeatmapVO;
+      return echartBarOrLineVO;
     }
     //整理分组
-    List<String> machineNameList = new ArrayList<>();
-    List<String> knifePositionList = new ArrayList<>();
-    Map<String, Integer> machineNameMap = new HashMap<>();
-    Map<String, Integer> knifePositionMap = new HashMap<>();
-    int x = 0;
-    int y = 0;
-    // 结果分组
-    int max = 0;
+    List<String> xAxisData = new ArrayList<>();
+    List<Integer> seriesData = new ArrayList<>();
     for (KnifeLifencyWarningReport knifeLifencyWarningReport : knifeLifencyWarningReportList) {
       String machineName = knifeLifencyWarningReport.getMachineName();
       String knifePosition = knifeLifencyWarningReport.getKnifePosition();
       if (StringUtils.isEmpty(machineName) || StringUtils.isEmpty(knifePosition)){
         continue;
-      }
-      Integer machineNameNo = machineNameMap.get(machineName);
-      if (null == machineNameNo){
-        machineNameList.add(machineName);
-        machineNameNo = x;
-        machineNameMap.put(machineName, x++);
-      }
-      Integer knifePositionNo = knifePositionMap.get(knifePosition);
-      if (null == knifePositionMap.get(knifePosition)){
-        knifePositionList.add(knifePosition);
-        knifePositionNo = y;
-        knifePositionMap.put(knifePosition, y++);
       }
       Integer currentCount =
               (null == knifeLifencyWarningReport.getCurrentCount() || 0 > knifeLifencyWarningReport
@@ -174,14 +173,14 @@ public class ChartServiceImpl extends BaseService implements ChartService {
       Integer totakCount = (null == knifeLifencyWarningReport.getTotalCount() || 1 > knifeLifencyWarningReport
                       .getTotalCount())
                       ? knifeDefaultLife : knifeLifencyWarningReport.getTotalCount();
-      max = Math.max(totakCount, max);
       Integer surplusCount = (0 > totakCount - currentCount) ? 0 : (totakCount - currentCount);
-      echartHeatmapVO.addData(machineNameNo,knifePositionNo,surplusCount);
+      xAxisData.add(String.format("%s%nT%s", machineName, seriesData));
+      seriesData.add(surplusCount);
     }
-    echartHeatmapVO.setMax(max);
-    echartHeatmapVO.setHours(machineNameList);
-    echartHeatmapVO.setDays(knifePositionList);
-    return echartHeatmapVO;
+    echartBarOrLineVO.setxAxisData(xAxisData);
+    echartBarOrLineVO.setyAxisname( "件");
+    echartBarOrLineVO.addSeriesData(seriesData);
+    return echartBarOrLineVO;
   }
 
   @Override

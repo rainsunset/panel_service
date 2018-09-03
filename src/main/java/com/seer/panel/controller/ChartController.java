@@ -9,7 +9,7 @@ import com.seer.panel.model.ProductLineAlarmReport;
 import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.service.ChartService;
 import com.seer.panel.view.EchartBarOrLineVO;
-import com.seer.panel.view.EchartHeatmapVO;
+import com.seer.panel.view.EchartPieVO;
 import com.seer.panel.view.EchartRadarVO;
 import com.seer.panel.view.ProductLineDTO;
 import com.seer.panel.view.ProductionDirectorVO;
@@ -82,6 +82,21 @@ public class ChartController extends BaseController {
     }
   }
 
+  @ApiOperation("刀具寿命统计")
+  @RequestMapping(value = "/productLineKnifeLifeencyCount", method = RequestMethod.POST)
+  public ResponseResult<EchartPieVO> getProductLineKnifeLifeencyCount(
+          @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
+    try {
+      EchartPieVO echartPieVO = chartService.getProductLineKnifeLifeencyCount(productLine);
+      return RestResultGenerator.genResult(echartPieVO);
+    } catch (GlobalErrorInfoException e) {
+      throw e;
+    } catch (Exception e) {
+      logger.error(String.format("Controller >>> 刀具寿命统计 接口异常 >>> msg:%S",e.toString()));
+      throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
+    }
+  }
+
   @ApiOperation("生产线报警(15min内)")
   @RequestMapping(value = "/productLineAlarmReport", method = RequestMethod.POST)
   public ResponseResult<List<ProductLineAlarmReport>> getProductLineAlarmReport(
@@ -100,12 +115,12 @@ public class ChartController extends BaseController {
 
   @ApiOperation(" 刀具寿命报警")
   @RequestMapping(value = "/machineLifencyWarningReport", method = RequestMethod.POST)
-  public ResponseResult<EchartHeatmapVO> getMachineLifencyWarningReport(
+  public ResponseResult<EchartBarOrLineVO> getMachineLifencyWarningReport(
       @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
     try {
-      EchartHeatmapVO machineLifencyWarningReportVOList = chartService
+      EchartBarOrLineVO echartBarOrLineVO = chartService
           .getMachineLifencyWarningReport(productLine);
-      return RestResultGenerator.genResult(machineLifencyWarningReportVOList);
+      return RestResultGenerator.genResult(echartBarOrLineVO);
     } catch (GlobalErrorInfoException e) {
       throw e;
     } catch (Exception e) {

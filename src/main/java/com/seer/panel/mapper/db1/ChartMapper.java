@@ -5,6 +5,7 @@ import com.seer.panel.model.KnifeBrokenReportByDiameter;
 import com.seer.panel.model.KnifeBrokenReportByPosition;
 import com.seer.panel.model.KnifeLifencyWarningReport;
 import com.seer.panel.model.MachineProductReport;
+import com.seer.panel.model.ProductLineKnifeLifeencyCount;
 import com.seer.panel.view.ProductLineDTO;
 import com.seer.panel.model.ProductLineAlarmReport;
 import java.util.List;
@@ -36,6 +37,14 @@ public interface ChartMapper {
    * @return
    */
   public List<List<?>> getProductLineMachineStatusReport(ProductLineDTO productLine) throws Exception;
+
+  /**
+   * 刀具寿命统计
+   * @param productLine
+   * @return
+   * @throws Exception
+   */
+  public List<ProductLineKnifeLifeencyCount> getProductLineKnifeLifeencyCount(ProductLineDTO productLine) throws Exception;
 
   /**
    * 生产线报警

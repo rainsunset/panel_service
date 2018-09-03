@@ -5,7 +5,7 @@ import com.seer.panel.model.ProdLineProdReport;
 import com.seer.panel.model.ProductLineAlarmReport;
 import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.view.EchartBarOrLineVO;
-import com.seer.panel.view.EchartHeatmapVO;
+import com.seer.panel.view.EchartPieVO;
 import com.seer.panel.view.EchartRadarVO;
 import com.seer.panel.view.ProductLineDTO;
 import com.seer.panel.view.ProductionDirectorVO;
@@ -37,6 +37,14 @@ public interface ChartService {
   public ProductLineMachineStatusReport getProductLineMachineStatusReport(ProductLineDTO productLine) throws Exception;
 
   /**
+   * 刀具寿命统计
+   * @param productLine
+   * @return
+   * @throws Exception
+   */
+  public EchartPieVO getProductLineKnifeLifeencyCount(ProductLineDTO productLine) throws Exception;
+
+  /**
    * 生产线报警
    * @param productLine
    * @return
@@ -48,7 +56,7 @@ public interface ChartService {
    * @param productLine
    * @return
    */
-  public EchartHeatmapVO getMachineLifencyWarningReport(ProductLineDTO productLine) throws Exception;
+  public EchartBarOrLineVO getMachineLifencyWarningReport(ProductLineDTO productLine) throws Exception;
 
   /**
    * 断刀频率统计(按刀径)

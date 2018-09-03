@@ -33,7 +33,7 @@
   <!--排序 设备名 工作时长(minute) 生产量-->
   <select id="getMachineProductReport" parameterType="com.seer.panel.view.ProductLineDTO"
     resultType="com.seer.panel.model.MachineProductReport">
-    SELECT ROW_NUMBER() OVER (order by macPSH.macWorkTime DESC) rank ,mac.machineName ,(macPSH.macWorkTime/60)macWorkTime ,macPSH.macProdNum
+    SELECT TOP 10 ROW_NUMBER() OVER (order by macPSH.macWorkTime DESC) rank ,mac.machineName ,(macPSH.macWorkTime/60)macWorkTime ,macPSH.macProdNum
     FROM machineinfo mac with(nolock)
     LEFT JOIN(
       SELECT macSH.machineCode , SUM(datediff(SECOND,macSH.startTime,macSH.endTime)) macWorkTime ,COUNT(1) macProdNum
@@ -49,18 +49,25 @@
   <!--产线机床信息-->
   <select id="getProductLineMachineStatusReport" parameterType="com.seer.panel.view.ProductLineDTO"
     statementType="CALLABLE" resultMap="machineInfoList , productLineStatus">
-    exec up_GetLineMachineStatus @cLine = #{productionLine}, @cWorksShop = #{worksShop}
+    EXEC up_GetLineMachineStatus @cLine = #{productionLine}, @cWorksShop = #{worksShop}
+  </select>
+
+  <!--刀具寿命统计-->
+  <select id="getProductLineKnifeLifeencyCount" parameterType="com.seer.panel.view.ProductLineDTO"
+    statementType="CALLABLE" resultType="com.seer.panel.model.ProductLineKnifeLifeencyCount">
+    EXEC sbd_pro_toollife_query @factory=#{factory}, @cLine=#{productionLine}
   </select>
 
   <!--15min内报警信息-->
   <select id="getProductLineAlarmReport" parameterType="com.seer.panel.view.ProductLineDTO"
     resultType="com.seer.panel.model.ProductLineAlarmReport">
-    SELECT mac.machineName ,convert(varchar(100), macPArm.alarmMsg) alarmMsg ,macPArm.knifeNum ,macPArm.occurrenceTime
+    SELECT TOP 6 mac.machineName ,convert(varchar(100), macPArm.alarmMsg) alarmMsg ,macPArm.knifeNum ,macPArm.occurrenceTime
     FROM machineinfo mac with(nolock)
     INNER JOIN(
       select macArm.machineCode ,macArm.alarmMsg ,macArm.knifeNum ,MIN(macArm.occurrenceTime) occurrenceTime
       FROM machinealarmhistory macArm with(nolock)
-      WHERE ASCII(macArm.alarmMsg) > 0
+      LEFT JOIN machinestatus macSta with(nolock) ON macSta.machineCode = macArm.machineCode
+      WHERE ASCII(macArm.alarmMsg) > 0 AND macSta.status = 3 AND macSta.updateTime > DATEADD(MINUTE, -30, GETDATE())
       AND macArm.occurrenceTime BETWEEN DATEADD(MINUTE, -15, GETDATE()) AND GETDATE()
       GROUP BY macArm.machineCode ,macArm.alarmMsg ,macArm.knifeNum
     ) macPArm ON mac.machineCode = macPArm.machineCode
@@ -71,7 +78,7 @@
   <!--刀具寿命预警-->
   <select id="getKnifeLifencyWarningReport" parameterType="com.seer.panel.view.ProductLineDTO"
     resultType="com.seer.panel.model.KnifeLifencyWarningReport">
-    SELECT mac.machineName ,macKni.knifePosition ,macKni.totalCount ,macKni.currentCount
+    SELECT TOP 10 mac.machineName ,macKni.knifePosition ,macKni.totalCount ,macKni.currentCount
     FROM machineinfo mac with(nolock)
     INNER JOIN(
       SELECT kni.machineCode ,kni.knifePosition ,kni.totalCount ,kniL.currentCount
@@ -80,7 +87,7 @@
       WHERE kni.status = 1
     ) macKni ON mac.machineCode = macKni.machineCode
     WHERE mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
-    ORDER BY macKni.machineCode ,macKni.knifePosition
+    ORDER BY macKni.currentCount DESC
   </select>
 
 
