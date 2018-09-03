@@ -203,7 +203,7 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 			seriesData.add(surplusCount);
 		}
 		echartBarOrLineVO.setxAxisData(xAxisData);
-		echartBarOrLineVO.setyAxisname("件");
+		echartBarOrLineVO.setyAxisname("剩余寿命(件)");
 		echartBarOrLineVO.addSeriesData(seriesData);
 		return echartBarOrLineVO;
 	}
