@@ -236,7 +236,7 @@ public class ChartServiceImpl extends BaseService implements ChartService {
         continue;
       }
       Integer brokenNum = (null == knifeBrokenReportByPosition.getBrokenNum()) ? 0 :knifeBrokenReportByPosition.getBrokenNum();
-      indicatorName.add(String.format("%s（%n次）",knifeNum,brokenNum));
+      indicatorName.add(String.format("%s号刀（%d次）",knifeNum,brokenNum));
       value.add(brokenNum);
       maxValue = Math.max(maxValue, brokenNum);
     }
