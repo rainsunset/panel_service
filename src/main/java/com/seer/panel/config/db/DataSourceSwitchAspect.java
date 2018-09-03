@@ -24,13 +24,13 @@ public class DataSourceSwitchAspect {
 
 	@Before("db1Aspect()")
 	public void db1() {
-		System.out.println("切换到db1 数据源...");
+		System.out.println(String.format("切换到%s 数据源...",DataSourceEnum.DB1));
 		DataSourceContextHolder.setDbType(DataSourceEnum.DB1);
 	}
 
 	@Before("db2Aspect()")
 	public void db2() {
-		System.out.println("切换到db2 数据源...");
+		System.out.println(String.format("切换到%s 数据源...",DataSourceEnum.DB2));
 		DataSourceContextHolder.setDbType(DataSourceEnum.DB2);
 	}
 

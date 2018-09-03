@@ -13,6 +13,7 @@ import com.seer.panel.service.ChartService;
 import com.seer.panel.view.EchartBarOrLineVO;
 import com.seer.panel.view.EchartHeatmapVO;
 import com.seer.panel.view.EchartPieVO;
+import com.seer.panel.view.EchartRadarVO;
 import com.seer.panel.view.ProductLineDTO;
 import com.seer.panel.view.ResponseResult;
 import com.seer.panel.view.RestResultGenerator;
@@ -119,10 +120,10 @@ public class ChartController extends BaseController {
 
   @ApiOperation("一周内断刀频率统计(按刀位)")
   @RequestMapping(value = "/knifeBrokenReportByPosition", method = RequestMethod.POST)
-  public ResponseResult<EchartPieVO> getKnifeBrokenReportByPosition(
+  public ResponseResult<EchartRadarVO> getKnifeBrokenReportByPosition(
           @RequestBody ProductLineDTO productLine) throws GlobalErrorInfoException {
     try {
-      EchartPieVO knifeBrokenReportByPositionList = chartService
+      EchartRadarVO knifeBrokenReportByPositionList = chartService
               .getKnifeBrokenReportByPosition(productLine);
       return RestResultGenerator.genResult(knifeBrokenReportByPositionList);
     } catch (GlobalErrorInfoException e) {

@@ -1,14 +1,17 @@
 package com.seer.panel.view;
 
+import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Ecahrt 柱状图或折线图对应Model
  * @autheor ligw
  * @date 2018/9/1 10:31
  */
 
+@ApiModel(description = "Ecahrt 柱状图或折线图对应Model")
 public class EchartBarOrLineVO implements Serializable {
 
 	private List<String> xAxisData;

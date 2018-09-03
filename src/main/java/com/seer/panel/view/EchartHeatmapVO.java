@@ -1,5 +1,6 @@
 package com.seer.panel.view;
 
+import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
  * @autheor ligw
  * @date 2018/9/1 12:39
  */
+@ApiModel(description = "Ecahrt 热力图 对应Model")
 public class EchartHeatmapVO implements Serializable {
 
 	private List<String> hours;

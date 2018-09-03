@@ -1,5 +1,6 @@
 package com.seer.panel.view;
 
+import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
  * @autheor ligw
  * @date 2018/9/1 10:55
  */
+@ApiModel(description = "Ecahrt 饼图 对应Model")
 public class EchartPieVO implements Serializable {
 
 	private List<Serie> series;

@@ -9,6 +9,7 @@ import com.seer.panel.model.ProductLineMachineStatusReport;
 import com.seer.panel.view.EchartBarOrLineVO;
 import com.seer.panel.view.EchartHeatmapVO;
 import com.seer.panel.view.EchartPieVO;
+import com.seer.panel.view.EchartRadarVO;
 import com.seer.panel.view.ProductLineDTO;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public interface ChartService {
    * @param productLine
    * @return
    */
-  public EchartPieVO getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception;
+  public EchartRadarVO getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception;
 
   /**
    * 生产线生产统计

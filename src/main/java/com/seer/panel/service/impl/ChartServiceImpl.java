@@ -20,6 +20,7 @@ import com.seer.panel.service.ChartService;
 import com.seer.panel.view.EchartBarOrLineVO;
 import com.seer.panel.view.EchartHeatmapVO;
 import com.seer.panel.view.EchartPieVO;
+import com.seer.panel.view.EchartRadarVO;
 import com.seer.panel.view.ProductLineDTO;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -201,8 +202,8 @@ public class ChartServiceImpl extends BaseService implements ChartService {
   }
 
   @Override
-  public EchartPieVO getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception {
-    EchartPieVO echartPieVO = new EchartPieVO();
+  public EchartRadarVO getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception {
+    EchartRadarVO echartRadarVO = new EchartRadarVO();
     List<KnifeBrokenReportByPosition> knifeBrokenReportByPositionList = null;
     try {
       knifeBrokenReportByPositionList = chartMapper.getKnifeBrokenReportByPosition(productLine);
@@ -211,20 +212,26 @@ public class ChartServiceImpl extends BaseService implements ChartService {
       throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
     }
     if (CollectionUtils.isEmpty(knifeBrokenReportByPositionList)) {
-      return echartPieVO;
+      return echartRadarVO;
     }
-    List<Map<String, Object>> serieDatas = new ArrayList<>();
+    List<String> indicatorName = new ArrayList<>();
+    List<Integer> value = new ArrayList<>();
+    int maxValue = 0;
     for (KnifeBrokenReportByPosition knifeBrokenReportByPosition : knifeBrokenReportByPositionList) {
+      String knifeNum = knifeBrokenReportByPosition.getKnifeNum();
       if (null == knifeBrokenReportByPosition.getKnifeNum()) {
         continue;
       }
-      Map<String, Object> serieData = new HashMap<>();
-      serieData.put("name",knifeBrokenReportByPosition.getKnifeNum());
-      serieData.put("value",(null == knifeBrokenReportByPosition.getBrokenNum()) ? 0 : knifeBrokenReportByPosition.getBrokenNum());
-      serieDatas.add(serieData);
+      Integer brokenNum = (null == knifeBrokenReportByPosition.getBrokenNum()) ? 0 :knifeBrokenReportByPosition.getBrokenNum();
+      indicatorName.add(knifeNum);
+      value.add(brokenNum);
+      maxValue = Math.max(maxValue, brokenNum);
     }
-    echartPieVO.addSerie(serieDatas);
-    return echartPieVO;
+    for (String s : indicatorName) {
+      echartRadarVO.addIndicator(s,maxValue);
+    }
+    echartRadarVO.setValue(value);
+    return echartRadarVO;
   }
 
   @Override

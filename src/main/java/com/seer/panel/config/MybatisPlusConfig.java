@@ -3,6 +3,7 @@ package com.seer.panel.config;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.seer.panel.config.db.DataSourceEnum;
 import com.seer.panel.config.db.DynamicDataSource;
@@ -20,6 +21,7 @@ import org.springframework.context.annotation.Primary;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.context.annotation.Profile;
 
 /**
  * @autheor ligw
@@ -44,14 +46,14 @@ public class MybatisPlusConfig {
 	/**
 	 * SQL执行效率插件
 	 */
-//	@Bean
-//	@Profile({"dev","test"})// 设置 dev test 环境开启
-//	public PerformanceInterceptor performanceInterceptor() {
-//		PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
-//		performanceInterceptor.setMaxTime(1000);
-//		performanceInterceptor.setFormat(true);
-//		return performanceInterceptor;
-//	}
+	@Bean
+	@Profile({"dev","test"})// 设置 dev test 环境开启
+	public PerformanceInterceptor performanceInterceptor() {
+		PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
+		performanceInterceptor.setMaxTime(1000);
+		performanceInterceptor.setFormat(true);
+		return performanceInterceptor;
+	}
 
 	@Bean(name = "db1")
 	@ConfigurationProperties(prefix = "spring.datasource.druid.db1")
