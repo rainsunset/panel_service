@@ -18,6 +18,8 @@ public class EchartHeatmapVO implements Serializable {
 
 	private List<int[]> data;
 
+	private Integer max;
+
 	public List<String> getHours() {
 		return hours;
 	}
@@ -40,6 +42,14 @@ public class EchartHeatmapVO implements Serializable {
 
 	public void setData(List<int[]> data) {
 		this.data = data;
+	}
+
+	public Integer getMax() {
+		return max;
+	}
+
+	public void setMax(Integer max) {
+		this.max = max;
 	}
 
 	public void addData(int x,int y,int val) {

@@ -148,14 +148,12 @@ public class ChartServiceImpl extends BaseService implements ChartService {
     int x = 0;
     int y = 0;
     // 结果分组
+    int max = 0;
     for (KnifeLifencyWarningReport knifeLifencyWarningReport : knifeLifencyWarningReportList) {
       String machineName = knifeLifencyWarningReport.getMachineName();
       String knifePosition = knifeLifencyWarningReport.getKnifePosition();
       if (StringUtils.isEmpty(machineName) || StringUtils.isEmpty(knifePosition)){
         continue;
-      }
-      if (null == knifeLifencyWarningReport.getTotalCount() || 1 > knifeLifencyWarningReport.getTotalCount()) {
-        knifeLifencyWarningReport.setTotalCount(knifeDefaultLife);
       }
       Integer machineNameNo = machineNameMap.get(machineName);
       if (null == machineNameNo){
@@ -173,13 +171,14 @@ public class ChartServiceImpl extends BaseService implements ChartService {
               (null == knifeLifencyWarningReport.getCurrentCount() || 0 > knifeLifencyWarningReport
                       .getCurrentCount())
                       ? 0 : knifeLifencyWarningReport.getCurrentCount();
-      Integer totakCount =
-              (null == knifeLifencyWarningReport.getTotalCount() || 0 > knifeLifencyWarningReport
+      Integer totakCount = (null == knifeLifencyWarningReport.getTotalCount() || 1 > knifeLifencyWarningReport
                       .getTotalCount())
-                      ? 0 : knifeLifencyWarningReport.getTotalCount();
+                      ? knifeDefaultLife : knifeLifencyWarningReport.getTotalCount();
+      max = Math.max(totakCount, max);
       Integer surplusCount = (0 > totakCount - currentCount) ? 0 : (totakCount - currentCount);
       echartHeatmapVO.addData(machineNameNo,knifePositionNo,surplusCount);
     }
+    echartHeatmapVO.setMax(max);
     echartHeatmapVO.setHours(machineNameList);
     echartHeatmapVO.setDays(knifePositionList);
     return echartHeatmapVO;
