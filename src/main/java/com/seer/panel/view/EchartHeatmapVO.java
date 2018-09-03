@@ -40,11 +40,11 @@ public class EchartHeatmapVO implements Serializable {
 		this.data = data;
 	}
 
-	public void addData(int y,int x,int val) {
+	public void addData(int x,int y,int val) {
 		if (null == this.data){
 			this.data = new ArrayList<>();
 		}
-		int[] a = {y, x, val};
+		int[] a = {x, y, val};
 		this.data.add(a);
 	}
 }

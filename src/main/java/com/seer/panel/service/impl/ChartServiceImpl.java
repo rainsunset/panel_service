@@ -164,7 +164,7 @@ public class ChartServiceImpl extends BaseService implements ChartService {
                       .getTotalCount())
                       ? 0 : knifeLifencyWarningReport.getTotalCount();
       Integer surplusCount = (0 > totakCount - currentCount) ? 0 : (totakCount - currentCount);
-      echartHeatmapVO.addData(knifePositionNo,machineNameNo,surplusCount);
+      echartHeatmapVO.addData(machineNameNo,knifePositionNo,surplusCount);
     }
     echartHeatmapVO.setHours(machineNameList);
     echartHeatmapVO.setDays(knifePositionList);
