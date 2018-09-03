@@ -44,7 +44,7 @@ public interface ChartMapper {
    * @return
    * @throws Exception
    */
-  public List<ProductLineKnifeLifeencyCount> getProductLineKnifeLifeencyCount(ProductLineDTO productLine) throws Exception;
+  public ProductLineKnifeLifeencyCount getProductLineKnifeLifeencyCount(ProductLineDTO productLine) throws Exception;
 
   /**
    * 生产线报警

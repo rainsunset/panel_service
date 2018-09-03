@@ -22,6 +22,9 @@ public class ProductLineKnifeLifeencyCount {
 	@ApiModelProperty(value = "严重")
 	private Integer iCount3;
 
+	@ApiModelProperty(value = "总和")
+	private Integer iCount;
+
 	public String getcLine() {
 		return cLine;
 	}
@@ -52,5 +55,13 @@ public class ProductLineKnifeLifeencyCount {
 
 	public void setiCount3(Integer iCount3) {
 		this.iCount3 = iCount3;
+	}
+
+	public Integer getiCount() {
+		return iCount;
+	}
+
+	public void setiCount(Integer iCount) {
+		this.iCount = iCount;
 	}
 }

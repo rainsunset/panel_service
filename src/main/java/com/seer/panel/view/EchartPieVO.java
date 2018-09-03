@@ -13,6 +13,8 @@ import java.util.Map;
 @ApiModel(description = "Ecahrt 饼图 对应Model")
 public class EchartPieVO implements Serializable {
 
+	private List<String> legendData;
+
 	private List<Serie> series;
 
 	public List<Serie> getSeries() {
@@ -21,6 +23,14 @@ public class EchartPieVO implements Serializable {
 
 	public void setSeries(List<Serie> series) {
 		this.series = series;
+	}
+
+	public List<String> getLegendData() {
+		return legendData;
+	}
+
+	public void setLegendData(List<String> legendData) {
+		this.legendData = legendData;
 	}
 
 	public void addSerie(List<Map<String,Object>> serieDatas) {
