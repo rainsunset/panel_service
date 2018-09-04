@@ -68,7 +68,8 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 			logger.error(String.format("获取机床稼动率排行异常 >>> 异常信息:%S", e.toString()));
 			throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
 		}
-		if (CollectionUtils.isEmpty(machineProductReportList) || 0 == machineProductReportList.get(0).getMacWorkTime() ) {
+		if (CollectionUtils.isEmpty(machineProductReportList) || null == machineProductReportList.get(0)
+				|| null == machineProductReportList.get(0).getMacWorkTime() || 0 >= machineProductReportList.get(0).getMacWorkTime()) {
 			return null;
 		}
 		EchartBarOrLineVO echartBarOrLineVO = new EchartBarOrLineVO();
