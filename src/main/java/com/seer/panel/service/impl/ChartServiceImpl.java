@@ -265,31 +265,37 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 	@Override
 	public ProdLineProdReport getProdLineProdReport(ProductLineDTO productLineDTO)
 			throws Exception {
-		ProdLineProdReport prodLineProdReport = new ProdLineProdReport();
+		ProdLineProdReport prodLineProdReport = null;
 		try {
 			prodLineProdReport = mesInfoMapper.getProdLineProdReport(productLineDTO);
 		} catch (Exception e) {
 			logger.error(String.format("MES 生产线生产统计 >>> 异常信息:%S", e.toString()));
 			throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
 		}
-		if (null == prodLineProdReport){
+		if (null == prodLineProdReport || 1 > prodLineProdReport.getPlannedProduction()){
 			prodLineProdReport = new ProdLineProdReport();
 			prodLineProdReport.setProductionLine(productLineDTO.getProductionLine());
 			return prodLineProdReport;
 		}
+		Integer plannedProduction = prodLineProdReport.getPlannedProduction();
+		prodLineProdReport = new ProdLineProdReport();
+		prodLineProdReport.setPlannedProduction(plannedProduction);
 		// 从生产数据统计产量
-		if (0 < prodLineProdReport.getPlannedProduction()){
-			Integer plannedProduction = prodLineProdReport.getPlannedProduction();
-			Integer prodLineProdNum = chartMapper.getProdLineProdReport(productLineDTO);
-			if (null != prodLineProdNum && 0 < prodLineProdNum) {
-				prodLineProdNum =
-						(prodLineProdNum > plannedProduction) ? plannedProduction : prodLineProdNum;
-				prodLineProdReport.setProdLineProdNum(prodLineProdNum);
-				DecimalFormat df = new DecimalFormat("#.00");
-				double prodLineProdPercent = prodLineProdNum / Double
-						.parseDouble(String.valueOf(prodLineProdReport.getPlannedProduction()));
-				prodLineProdReport.setProdLineProdPercent(Double.parseDouble(df.format(prodLineProdPercent)));
-			}
+		Integer prodLineProdNum = null;
+		try {
+			prodLineProdNum = chartMapper.getProdLineProdReport(productLineDTO);
+		} catch (Exception e) {
+			logger.error(String.format("生产线生产统计 >>> 异常信息:%S", e.toString()));
+			throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
+		}
+		if (null != prodLineProdNum && 0 < prodLineProdNum) {
+			prodLineProdNum =
+					(prodLineProdNum > plannedProduction) ? plannedProduction : prodLineProdNum;
+			prodLineProdReport.setProdLineProdNum(prodLineProdNum);
+			DecimalFormat df = new DecimalFormat("#.00");
+			double prodLineProdPercent = prodLineProdNum / Double
+					.parseDouble(String.valueOf(prodLineProdReport.getPlannedProduction()));
+			prodLineProdReport.setProdLineProdPercent(Double.parseDouble(df.format(prodLineProdPercent)));
 		}
 		prodLineProdReport.setProductionLine(productLineDTO.getProductionLine());
 		return prodLineProdReport;
