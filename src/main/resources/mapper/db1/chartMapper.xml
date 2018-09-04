@@ -127,8 +127,12 @@
     from machinestatushistory macSH with(nolock)
     LEFT JOIN machineinfo mac ON mac.machineCode = macSH.machineCode
     WHERE macSH.status = 1 AND macSH.startTime IS NOT NULL AND macSH.endTime IS NOT NULL
-      AND CONVERT(varchar(100),macSH.startTime,23)  = CONVERT(varchar(100),GETDATE(), 23)
-      AND mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
+    AND CAST(macSH.startTime AS datetime)
+    <![CDATA[
+    BETWEEN CAST((CASE WHEN (Datename(hour,GetDate()) < 8) THEN CONVERT(varchar(100),DATEADD(DAY ,-1, GETDATE()),23) ELSE CONVERT(varchar(100),GETDATE(), 23) END)+' 8:00:00'AS datetime)
+    AND CAST((CASE WHEN (Datename(hour,GetDate()) < 8) THEN CONVERT(varchar(100),GETDATE(),23) ELSE CONVERT(varchar(100),DATEADD(DAY ,1, GETDATE()), 23) END)+' 7:59:59'AS datetime)
+    ]]>
+    AND mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
     GROUP BY mac.productionLine
   </select>
 

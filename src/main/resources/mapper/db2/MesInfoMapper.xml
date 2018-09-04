@@ -10,36 +10,36 @@
     <result column="PRODLINEPRODPERCENT" property="prodLineProdPercent" jdbcType="DOUBLE"/>
   </resultMap>
 
-  <select id="getProdLineProdReport" resultMap="prodLineProdReport">
-    select pwc.name productionLine, Z.qty plannedProduction, X.finsh_total prodLineProdNum, round((X.finsh_total/Z.qty) * 100,2) prodLineProdPercent
-    from pmbf_work_center pwc
-    left join PMBF_LOCATION PML on PML.gid=pwc.location_gid
-    left join
+  <select id="getProdLineProdReport" resultMap="prodLineProdReport" parameterType="com.seer.panel.view.ProductLineDTO">
+    SELECT pwc.name productionLine, Z.qty plannedProduction, X.finsh_total prodLineProdNum, round((X.finsh_total/Z.qty) * 100,2)  prodLineProdPercent
+    FROM pmbf_work_center pwc
+    LEFT JOIN PMBF_LOCATION PML on PML.gid=pwc.location_gid
+    LEFT JOIN
     (
-    select
-    uto.work_center_gid,
-    sum(uto.plan_qty) as qty
-    from UEX_VTRACK_RECORD uto
+    SELECT uto.work_center_gid, sum(uto.plan_qty) as qty
+    FROM UEX_VTRACK_RECORD uto
     <![CDATA[
-    where ( uto.planned_start_time >= to_date('2018-06-13 00:00:00','yyyy-mm-dd hh24:mi:ss')
-    and uto.planned_start_time <=  to_date('2018-06-13 23:59:59','yyyy-mm-dd hh24:mi:ss')) and uto.is_close=0 and uto.is_delete=0 and uto.is_active=0
+    WHERE TO_CHAR(uto.planned_start_time,'YYYY-MM-DD') = (CASE WHEN (TO_CHAR(SYSDATE,'hh24') < 8) THEN TO_CHAR(SYSDATE -1 ,'YYYY-MM-DD') ELSE TO_CHAR(SYSDATE,'YYYY-MM-DD') END)
     ]]>
-    group by work_center_gid
-    )  Z on z.work_center_gid = pwc.gid
-
-    left join
+    AND uto.is_close=0 and uto.is_delete=0 and uto.is_active=0
+    GROUP BY work_center_gid
+    )  Z ON z.work_center_gid = pwc.gid
+    LEFT JOIN
     (
-    select
+    SELECT
     work_center_gid,
-    sum(udi.effective_qty) as finsh_total
-    from UEX_DAQ_INFO udi
-    where udi.is_delete=0 and  (udi.operate_type=4 or  udi.operate_type=3)
+    SUM(udi.effective_qty) finsh_total
+    FROM UEX_DAQ_INFO udi
+    WHERE udi.is_delete=0 AND (udi.operate_type=4 OR udi.operate_type=3)
+    AND udi.daq_date
     <![CDATA[
-    and udi.daq_date >= to_date('2018-06-13 8:00:00','yyyy-mm-dd hh24:mi:ss') and udi.daq_date <= to_date('2018-06-14 7:59:59','yyyy-mm-dd hh24:mi:ss')
+    BETWEEN TO_DATE(CONCAT((CASE WHEN (TO_CHAR(SYSDATE,'hh24') < 8) THEN TO_CHAR(SYSDATE -1 ,'YYYY-MM-DD') ELSE TO_CHAR(SYSDATE,'YYYY-MM-DD') END),' 8:00:00'),'yyyy-mm-dd hh24:mi:ss')
+    AND TO_DATE(CONCAT((CASE WHEN (TO_CHAR(SYSDATE,'hh24') < 8) THEN TO_CHAR(SYSDATE ,'YYYY-MM-DD') ELSE TO_CHAR(SYSDATE + 1,'YYYY-MM-DD') END),' 7:59:59'),'yyyy-mm-dd hh24:mi:ss')
     ]]>
-    group by udi.work_center_gid
-    )  X on X.work_center_gid= pwc.gid
-    where pwc.name = CONCAT('B','线') AND PML.name = '东城智能车间'  order by PML.NAME DESC, pwc.name asc
+    GROUP BY udi.work_center_gid
+    )  X ON X.work_center_gid= pwc.gid
+    WHERE pwc.name = CONCAT(#{productionLine},'线') AND PML.name = '东城智能车间'
+    ORDER BY PML.NAME DESC, pwc.name asc
   </select>
 
 </mapper>

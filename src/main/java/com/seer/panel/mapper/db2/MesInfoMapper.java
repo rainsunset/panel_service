@@ -1,6 +1,7 @@
 package com.seer.panel.mapper.db2;
 
 import com.seer.panel.model.ProdLineProdReport;
+import com.seer.panel.view.ProductLineDTO;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,6 +15,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MesInfoMapper {
 
-    public ProdLineProdReport getProdLineProdReport()throws Exception;
+    public ProdLineProdReport getProdLineProdReport(ProductLineDTO productLineDTO)throws Exception;
 
 }

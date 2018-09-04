@@ -24,6 +24,7 @@ import com.seer.panel.view.EchartPieVO;
 import com.seer.panel.view.EchartRadarVO;
 import com.seer.panel.view.ProductLineDTO;
 import com.seer.panel.view.ProductionDirectorVO;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -264,14 +265,33 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 	@Override
 	public ProdLineProdReport getProdLineProdReport(ProductLineDTO productLineDTO)
 			throws Exception {
-		//TODO NEED REWRITE
-		ProdLineProdReport prodLineProdReport = null;
+		ProdLineProdReport prodLineProdReport = new ProdLineProdReport();
 		try {
-			prodLineProdReport = mesInfoMapper.getProdLineProdReport();
+			prodLineProdReport = mesInfoMapper.getProdLineProdReport(productLineDTO);
 		} catch (Exception e) {
 			logger.error(String.format("MES 生产线生产统计 >>> 异常信息:%S", e.toString()));
 			throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
 		}
+		if (null == prodLineProdReport){
+			prodLineProdReport = new ProdLineProdReport();
+			prodLineProdReport.setProductionLine(productLineDTO.getProductionLine());
+			return prodLineProdReport;
+		}
+		// 从生产数据统计产量
+		if (0 < prodLineProdReport.getPlannedProduction()){
+			Integer plannedProduction = prodLineProdReport.getPlannedProduction();
+			Integer prodLineProdNum = chartMapper.getProdLineProdReport(productLineDTO);
+			if (null != prodLineProdNum && 0 < prodLineProdNum) {
+				prodLineProdNum =
+						(prodLineProdNum > plannedProduction) ? plannedProduction : prodLineProdNum;
+				prodLineProdReport.setProdLineProdNum(prodLineProdNum);
+				DecimalFormat df = new DecimalFormat("#.00");
+				double prodLineProdPercent = prodLineProdNum / Double
+						.parseDouble(String.valueOf(prodLineProdReport.getPlannedProduction()));
+				prodLineProdReport.setProdLineProdPercent(Double.parseDouble(df.format(prodLineProdPercent)));
+			}
+		}
+		prodLineProdReport.setProductionLine(productLineDTO.getProductionLine());
 		return prodLineProdReport;
 	}
 

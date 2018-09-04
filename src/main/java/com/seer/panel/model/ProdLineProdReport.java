@@ -15,13 +15,13 @@ public class ProdLineProdReport implements Serializable {
   private String productionLine;
 
   @ApiModelProperty(value = "生产数")
-  private Integer prodLineProdNum;
+  private Integer prodLineProdNum = 0;
 
   @ApiModelProperty(value = "今日计划生产数")
-  private Integer plannedProduction;
+  private Integer plannedProduction = 0;
 
   @ApiModelProperty(value = "完工率")
-  private Double prodLineProdPercent;
+  private Double prodLineProdPercent = 0.0;
 
   public String getProductionLine() {
     return productionLine;
