@@ -78,16 +78,19 @@
   <!--刀具寿命预警-->
   <select id="getKnifeLifencyWarningReport" parameterType="com.seer.panel.view.ProductLineDTO"
     resultType="com.seer.panel.model.KnifeLifencyWarningReport">
-    SELECT TOP 10 mac.machineName ,macKni.knifePosition ,macKni.totalCount ,macKni.currentCount
+    SELECT TOP 10 mac.machineName ,macKni.knifePosition ,macKni.totalCount ,macKni.currentCount ,macKni.surplusCount
     FROM machineinfo mac with(nolock)
     INNER JOIN(
-      SELECT kni.machineCode ,kni.knifePosition ,kni.totalCount ,kniL.currentCount
+      SELECT kni.machineCode ,kni.knifePosition
+      ,(CASE WHEN kni.totalCount IS NULL THEN 3000 WHEN 1 > kni.totalCount THEN 3000 ELSE kni.totalCount END) totalCount
+      ,(CASE WHEN kniL.currentCount IS NULL THEN 0 ELSE kniL.currentCount END)) currentCount
+      ,((CASE WHEN kni.totalCount IS NULL THEN 3000 WHEN 1 > kni.totalCount THEN 3000 ELSE kni.totalCount END) - (CASE WHEN kniL.currentCount is NULL THEN 0 ELSE kniL.currentCount END))surplusCount
       FROM knifeinfo kni with(nolock)
-      LEFT JOIN knifelife kniL with(nolock) ON kniL.machineCode = kni.machineCode AND kniL.knifeNum = kni.knifePosition
+      LEFT JOIN knifelife kniL ON kniL.machineCode = kni.machineCode AND kniL.knifeNum = kni.knifePosition
       WHERE kni.status = 1
     ) macKni ON mac.machineCode = macKni.machineCode
     WHERE mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
-    ORDER BY macKni.currentCount DESC
+    ORDER BY macKni.surplusCount
   </select>
 
 

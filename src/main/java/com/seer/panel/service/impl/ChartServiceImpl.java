@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -43,12 +42,6 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 
 	@Autowired
 	private ChartMapper chartMapper;
-
-	@Value("${prodProp.knifeDefaultLife}")
-	private Integer knifeDefaultLife;
-
-	@Value("${prodProp.plannedProduction}")
-	private Integer plannedProduction;
 
 	@Autowired
 	private MesInfoMapper mesInfoMapper;
@@ -67,8 +60,6 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 
 	@Override
 	public EchartBarOrLineVO getMachineProductReport(ProductLineDTO productLine) throws Exception {
-		EchartBarOrLineVO echartBarOrLineVO = new EchartBarOrLineVO();
-		echartBarOrLineVO.setyAxisname("分钟(min)");
 		List<MachineProductReport> machineProductReportList = null;
 		System.out.println(DataSourceContextHolder.getDbType());
 		try {
@@ -77,9 +68,11 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 			logger.error(String.format("获取机床稼动率排行异常 >>> 异常信息:%S", e.toString()));
 			throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
 		}
-		if (CollectionUtils.isEmpty(machineProductReportList)) {
-			return echartBarOrLineVO;
+		if (CollectionUtils.isEmpty(machineProductReportList) || 0 == machineProductReportList.get(0).getMacWorkTime() ) {
+			return null;
 		}
+		EchartBarOrLineVO echartBarOrLineVO = new EchartBarOrLineVO();
+		echartBarOrLineVO.setyAxisname("分钟(min)");
 		List<Integer> seriesData = new ArrayList<>();
 		List<String> xAxisData = new ArrayList<>();
 		for (MachineProductReport machineProductReport : machineProductReportList) {
@@ -168,7 +161,6 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 	@Override
 	public EchartBarOrLineVO getMachineLifencyWarningReport(ProductLineDTO productLine)
 			throws Exception {
-		EchartBarOrLineVO echartBarOrLineVO = new EchartBarOrLineVO();
 		List<KnifeLifencyWarningReport> knifeLifencyWarningReportList = null;
 		try {
 			knifeLifencyWarningReportList = chartMapper.getKnifeLifencyWarningReport(productLine);
@@ -177,8 +169,9 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 			throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
 		}
 		if (CollectionUtils.isEmpty(knifeLifencyWarningReportList)) {
-			return echartBarOrLineVO;
+			return null;
 		}
+		EchartBarOrLineVO echartBarOrLineVO = new EchartBarOrLineVO();
 		//整理分组
 		List<String> xAxisData = new ArrayList<>();
 		List<Integer> seriesData = new ArrayList<>();
@@ -188,17 +181,9 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 			if (StringUtils.isEmpty(machineName) || StringUtils.isEmpty(knifePosition)) {
 				continue;
 			}
-			Integer currentCount =
-					(null == knifeLifencyWarningReport.getCurrentCount()
-							|| 0 > knifeLifencyWarningReport
-							.getCurrentCount())
-							? 0 : knifeLifencyWarningReport.getCurrentCount();
-			Integer totakCount = (null == knifeLifencyWarningReport.getTotalCount()
-					|| 1 > knifeLifencyWarningReport
-					.getTotalCount())
-					? knifeDefaultLife : knifeLifencyWarningReport.getTotalCount();
-			Integer surplusCount =
-					(0 > totakCount - currentCount) ? 0 : (totakCount - currentCount);
+			Integer currentCount = knifeLifencyWarningReport.getCurrentCount();
+			Integer totakCount = knifeLifencyWarningReport.getTotalCount();
+			Integer surplusCount = knifeLifencyWarningReport.getSurplusCount();
 			xAxisData.add(String.format("%s%nT%s", machineName, knifePosition));
 			seriesData.add(surplusCount);
 		}
@@ -211,8 +196,6 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 	@Override
 	public EchartBarOrLineVO getKnifeBrokenReportByDiameter(ProductLineDTO productLine)
 			throws Exception {
-		EchartBarOrLineVO echartBarOrLineVO = new EchartBarOrLineVO();
-		echartBarOrLineVO.setyAxisname("单位（次）");
 		List<KnifeBrokenReportByDiameter> knifeBrokenReportByDiameterList = null;
 		try {
 			knifeBrokenReportByDiameterList = chartMapper
@@ -222,8 +205,10 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 			throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
 		}
 		if (CollectionUtils.isEmpty(knifeBrokenReportByDiameterList)) {
-			return echartBarOrLineVO;
+			return null;
 		}
+		EchartBarOrLineVO echartBarOrLineVO = new EchartBarOrLineVO();
+		echartBarOrLineVO.setyAxisname("单位（次）");
 		List<String> xAxisData = new ArrayList<>();
 		List<Integer> serieData = new ArrayList<>();
 		for (KnifeBrokenReportByDiameter knifeBrokenReportByDiameter : knifeBrokenReportByDiameterList) {
@@ -242,7 +227,6 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 	@Override
 	public EchartRadarVO getKnifeBrokenReportByPosition(ProductLineDTO productLine)
 			throws Exception {
-		EchartRadarVO echartRadarVO = new EchartRadarVO();
 		List<KnifeBrokenReportByPosition> knifeBrokenReportByPositionList = null;
 		try {
 			knifeBrokenReportByPositionList = chartMapper
@@ -252,8 +236,9 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 			throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
 		}
 		if (CollectionUtils.isEmpty(knifeBrokenReportByPositionList)) {
-			return echartRadarVO;
+			return null;
 		}
+		EchartRadarVO echartRadarVO = new EchartRadarVO();
 		List<String> indicatorName = new ArrayList<>();
 		List<Integer> value = new ArrayList<>();
 		int maxValue = 0;
@@ -280,14 +265,6 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 			throws Exception {
 		//TODO NEED REWRITE
 		ProdLineProdReport prodLineProdReport = null;
-//    prodLineProdReport.setProductionLine(productLineDTO.getProductionLine());
-//    try {
-//      prodLineProdReport.setProdLineProdNum(chartMapper.getProdLineProdReport(productLineDTO));
-//    } catch (Exception e) {
-//      logger.error(String.format(" 生产线生产统计 >>> 异常信息:%S",e.toString()));
-//      throw new GlobalErrorInfoException(GlobalErrorInfoEnum.SYSTEM_ERROR);
-//    }
-//    prodLineProdReport.setPlannedProduction(plannedProduction);
 		try {
 			prodLineProdReport = mesInfoMapper.getProdLineProdReport();
 		} catch (Exception e) {
