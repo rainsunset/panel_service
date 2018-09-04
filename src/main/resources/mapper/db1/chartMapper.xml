@@ -83,7 +83,7 @@
     INNER JOIN(
       SELECT kni.machineCode ,kni.knifePosition
       ,(CASE WHEN kni.totalCount IS NULL THEN 3000 WHEN 1 > kni.totalCount THEN 3000 ELSE kni.totalCount END) totalCount
-      ,(CASE WHEN kniL.currentCount IS NULL THEN 0 ELSE kniL.currentCount END)) currentCount
+      ,(CASE WHEN kniL.currentCount IS NULL THEN 0 ELSE kniL.currentCount END) currentCount
       ,((CASE WHEN kni.totalCount IS NULL THEN 3000 WHEN 1 > kni.totalCount THEN 3000 ELSE kni.totalCount END) - (CASE WHEN kniL.currentCount is NULL THEN 0 ELSE kniL.currentCount END))surplusCount
       FROM knifeinfo kni with(nolock)
       LEFT JOIN knifelife kniL ON kniL.machineCode = kni.machineCode AND kniL.knifeNum = kni.knifePosition
