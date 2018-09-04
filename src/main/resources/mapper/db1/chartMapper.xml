@@ -97,27 +97,27 @@
   <!--周内各刀经断刀频次-->
   <select id="getKnifeBrokenReportByDiameter" parameterType="com.seer.panel.view.ProductLineDTO"
     resultType="com.seer.panel.model.KnifeBrokenReportByDiameter">
-  select mac.productionLine ,broH.knifeDiameter ,COUNT(1) as brokenNum
-  from brokenhistory broH with(nolock)
-  join machineinfo mac with(nolock) on mac.machineCode = broH.machineCode
-  where broH.bBroken=1 AND CONVERT(varchar(100),broH.brokenTime,23)
-    BETWEEN CONVERT(varchar(100),DATEADD(DAY,-8, GETDATE()),23) AND CONVERT(varchar(100),DATEADD(DAY ,-1, GETDATE()), 23)
-    AND mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
-  group by mac.productionLine,broH.knifeDiameter
-  order by broH.knifeDiameter
+    SELECT mac.productionLine ,bkd.knifeDiameter ,COUNT (1) brokenNum
+    FROM dbo.brokenknifedetail bkd with(nolock)
+    JOIN machineinfo mac with(nolock) on mac.machineCode = bkd.machineCode
+    WHERE
+      CONVERT(varchar(100),bkd.brokenTime,23) BETWEEN CONVERT(varchar(100),DATEADD(DAY,-8, GETDATE()),23) AND CONVERT(varchar(100),DATEADD(DAY ,-1, GETDATE()), 23)
+      AND mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
+    GROUP BY mac.productionLine ,bkd.knifeDiameter
+    ORDER BY bkd.knifeDiameter
   </select>
 
   <!--周内各刀位断刀频次-->
   <select id="getKnifeBrokenReportByPosition" parameterType="com.seer.panel.view.ProductLineDTO"
     resultType="com.seer.panel.model.KnifeBrokenReportByPosition">
-  select mac.productionLine ,broH.knifeNum ,COUNT(1) as brokenNum
-  from brokenhistory broH with(nolock)
-  join machineinfo mac with(nolock) on mac.machineCode = broH.machineCode
-  where broH.bBroken=1 AND CONVERT(varchar(100),broH.brokenTime,23)
-    BETWEEN CONVERT(varchar(100),DATEADD(DAY,-8, GETDATE()),23) AND CONVERT(varchar(100),DATEADD(DAY ,-1, GETDATE()), 23)
-    AND mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
-  group by mac.productionLine,broH.knifeNum
-  order by broH.knifeNum
+    SELECT mac.productionLine ,bkd.knifeNum ,COUNT (1) brokenNum
+    FROM dbo.brokenknifedetail bkd with(nolock)
+    JOIN machineinfo mac with(nolock) on mac.machineCode = bkd.machineCode
+    WHERE CONVERT(varchar(100),bkd.brokenTime,23)
+      BETWEEN CONVERT(varchar(100),DATEADD(DAY,-8, GETDATE()),23) AND CONVERT(varchar(100),DATEADD(DAY ,-1, GETDATE()), 23)
+      AND mac.factory = #{factory} AND mac.worksShop = #{worksShop} AND mac.productionLine = #{productionLine} AND mac.useStatus = 1
+    GROUP BY mac.productionLine ,bkd.knifeNum
+    ORDER BY bkd.knifeNum;
   </select>
 
   <!--当天生产数量-->
