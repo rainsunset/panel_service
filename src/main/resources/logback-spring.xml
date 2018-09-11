@@ -5,8 +5,8 @@
   <!-- 日志文件路径 -->
   <!-- <springProperty  name="logFilePath" source="logging.path"/> -->
   <property resource="application.yml" />
-  <substitutionProperty name="LOG_HOME" value="${logging.path}" />
-  <substitutionProperty name="PROJECT_NAME" value="${server.name}" />
+  <substitutionProperty name="LOG_HOME" value="${name}" />
+  <substitutionProperty name="PROJECT_NAME" value="${name}" />
   <!--<substitutionProperty name="CUR_NODE" value="${info.node}" />-->
 
   <!-- 日志数据库路径 -->
@@ -24,7 +24,6 @@
       </pattern>
       <charset>utf-8</charset>
     </encoder>
-
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <fileNamePattern>${LOG_HOME}/${PROJECT_NAME}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -152,7 +151,7 @@
     <logger name="com.warm" level="info"/>
     <root level="DEBUG">
       <!-- <appender-ref ref="console" /> -->
-      <appender-ref ref="file" />
+      <!--<appender-ref ref="file" />-->
     </root>
     <root level="ERROR">
       <appender-ref ref="file_error" />

@@ -1,6 +1,10 @@
+server:
+    name: prodPanel
+logging:
+    path: anel_service_log
 spring:
     profiles:
-        active: test
+        active: dev
     aop:
         proxy-target-class: true
         auto: true
@@ -39,5 +43,3 @@ mybatis-plus:
         cache-enabled: false
         #配置JdbcTypeForNull, oracle数据库必须配置
         jdbc-type-for-null: 'null'
-logging:
-    path:'D:\log'
