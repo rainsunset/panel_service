@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @autheor ligw
- * @date 2018/9/3 11:04
+ * Ecahrt 雷达图 对应Model
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
+ * @date 2018 /9/3 11:04
  */
 @ApiModel(description = "Ecahrt 雷达图 对应Model")
 public class EchartRadarVO {

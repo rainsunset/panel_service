@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.seer.panel.config.db.DataSourceEnum;
 import com.seer.panel.config.db.DynamicDataSource;
 import org.apache.ibatis.plugin.Interceptor;
-import org.apache.ibatis.session.SqlSessionFactory;
+
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,18 +24,20 @@ import java.util.Map;
 import org.springframework.context.annotation.Profile;
 
 /**
- * @autheor ligw
- * @date 2018/9/1 13:55
+ * myBatis 多数据源配置
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
+ * @date 2018 /9/1 13:55
  */
-
 @Configuration
 @MapperScan(value ={"com.seer.panel.mapper.db*"})
 public class MybatisPlusConfig {
 
 	/**
-	 * 分页插件，自动识别数据库类型
-	 * 多租户，请参考官网【插件扩展】
-	 * @return
+	 * 分页插件，自动识别数据库类型 多租户，请参考官网【插件扩展】
+	 *
+	 * @return pagination interceptor
+	 * @author : ligangwei / 2018-12-29
 	 */
 	@Bean
 	public PaginationInterceptor paginationInterceptor() {
@@ -45,6 +47,9 @@ public class MybatisPlusConfig {
 
 	/**
 	 * SQL执行效率插件
+	 *
+	 * @return the performance interceptor
+	 * @author : ligangwei / 2018-12-29
 	 */
 	@Bean
 	@Profile({"dev","test"})// 设置 dev test 环境开启
@@ -55,12 +60,24 @@ public class MybatisPlusConfig {
 		return performanceInterceptor;
 	}
 
+	/**
+	 * Db 1 data source.
+	 *
+	 * @return the data source
+	 * @author : ligangwei / 2018-12-29
+	 */
 	@Bean(name = "db1")
 	@ConfigurationProperties(prefix = "spring.datasource.druid.db1")
 	public DataSource db1() {
 		return DruidDataSourceBuilder.create().build();
 	}
 
+	/**
+	 * Db 2 data source.
+	 *
+	 * @return the data source
+	 * @author : ligangwei / 2018-12-29
+	 */
 	@Bean(name = "db2")
 	@ConfigurationProperties(prefix = "spring.datasource.druid.db2")
 	public DataSource db2() {
@@ -69,6 +86,11 @@ public class MybatisPlusConfig {
 
 	/**
 	 * 动态数据源配置
+	 *
+	 * @param db1 the db 1
+	 * @param db2 the db 2
+	 * @return the data source
+	 * @author : ligangwei / 2018-12-29
 	 */
 	@Bean(name ="datasource")
 	@Primary
@@ -85,6 +107,13 @@ public class MybatisPlusConfig {
 		return dynamicDataSource;
 	}
 
+	/**
+	 * Sql session factory mybatis sql session factory bean.
+	 *
+	 * @return the mybatis sql session factory bean
+	 * @throws Exception the exception
+	 * @author : ligangwei / 2018-12-29
+	 */
 	@Bean("sqlSessionFactory")
 	@ConfigurationProperties(prefix = "mybatis-plus")
 	@ConfigurationPropertiesBinding()
@@ -101,19 +130,6 @@ public class MybatisPlusConfig {
 		sqlSessionFactory.setPlugins(new Interceptor[]{
 				paginationInterceptor()
 		});
-//        sqlSessionFactory.setGlobalConfig(globalConfiguration());
 		return sqlSessionFactory;
 	}
-
- /*   @Bean
-    public GlobalConfiguration globalConfiguration() {
-        GlobalConfiguration conf = new GlobalConfiguration(new LogicSqlInjector());
-        conf.setLogicDeleteValue("-1");
-        conf.setLogicNotDeleteValue("1");
-        conf.setIdType(0);
-        conf.setMetaObjectHandler(new MyMetaObjectHandler());
-        conf.setDbColumnUnderline(true);
-        conf.setRefresh(true);
-        return conf;
-    }*/
 }

@@ -13,6 +13,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import static com.google.common.collect.Lists.newArrayList;
 
+/**
+ * swagger 配置
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
+ */
 @Configuration
 @EnableSwagger2
 public class WebAppConfig {

@@ -14,6 +14,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * XML 相关工具方法
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
+ */
 public class XmlUtil {
     //region 解析XML
     /**

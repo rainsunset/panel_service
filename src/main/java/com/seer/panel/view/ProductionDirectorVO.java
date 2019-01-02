@@ -4,8 +4,10 @@ import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 
 /**
- * @autheor ligw
- * @date 2018/9/3 11:37
+ * 生产负责人
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
+ * @date 2018 /9/3 11:37
  */
 @ApiModel(description = "生产负责人")
 public class ProductionDirectorVO implements Serializable {

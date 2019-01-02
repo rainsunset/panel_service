@@ -5,8 +5,10 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 
 /**
- * @autheor ligw
- * @date 2018/8/23 19:42
+ * 生产线信息
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
+ * @date 2018 /8/23 19:42
  */
 @ApiModel(description = "生产线信息")
 public class ProductLineDTO implements Serializable {

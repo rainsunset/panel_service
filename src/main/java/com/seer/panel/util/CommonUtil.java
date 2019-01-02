@@ -5,10 +5,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.UUID;
 
+/**
+ * 常用工具类
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
+ */
 public class CommonUtil {
+
     /**
      * 获取系统时间戳
-     * @return String
+     *
+     * @return String string
+     * @author : ligangwei / 2018-12-29
      */
     public static String getTimeStamp() {
         String timeStamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
@@ -17,7 +25,9 @@ public class CommonUtil {
 
     /**
      * 获取系统时间戳(毫秒)
-     * @return String
+     *
+     * @return String string
+     * @author : ligangwei / 2018-12-29
      */
     public static String getTimeSampInMillis(){
         return String.valueOf(Calendar.getInstance().getTimeInMillis());
@@ -25,7 +35,9 @@ public class CommonUtil {
 
     /**
      * 获取32位UUID字符串
-     * @return String
+     *
+     * @return String string
+     * @author : ligangwei / 2018-12-29
      */
     public static String getUUID(){
         return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 32);
@@ -33,8 +45,10 @@ public class CommonUtil {
 
     /**
      * 获取随机数字符串
+     *
      * @param bitCount 随机数位数
-     * @return String
+     * @return String string
+     * @author : ligangwei / 2018-12-29
      */
     public static String getRandomNumber(int bitCount){
         return String.valueOf((int) ((Math.random() * 9 + 1) * (int) Math.pow(10, bitCount)));
@@ -43,9 +57,11 @@ public class CommonUtil {
 
     /**
      * 获取上传文件父级目录绝对路径(若路径不存在重新创建)
+     *
      * @param rootPath 文件资源根目录
      * @param relativePath 相对路径
-     * @return 绝对路径
+     * @return 绝对路径 string
+     * @author : ligangwei / 2018-12-29
      */
     public static String getUploadFilePath(String rootPath, String relativePath){
         File root = new File(rootPath);
@@ -68,7 +84,9 @@ public class CommonUtil {
 
     /**
      * 根据上传文件的父级绝对路径获取相对路径
-     * @return 相对路径
+     *
+     * @return 相对路径 string
+     * @author : ligangwei / 2018-12-29
      */
     public static String getRelativePath(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -79,8 +97,10 @@ public class CommonUtil {
 
     /**
      * 获取文件扩展名
-     * @param filename
-     * @return
+     *
+     * @param filename the filename
+     * @return string
+     * @author : ligangwei / 2018-12-29
      */
     public static String getExtensionName(String filename) {
         if ((filename != null) && (filename.length() > 0)) {
@@ -94,8 +114,10 @@ public class CommonUtil {
 
     /**
      * 查找从小到大排序的数字数组缺少的最小数字
-     * @param array
-     * @return
+     *
+     * @param array the array
+     * @return int
+     * @author : ligangwei / 2018-12-29
      */
     public static int minLoseInArray(int[] array){
         int minque = 1;
@@ -145,9 +167,11 @@ public class CommonUtil {
 
     /**
      * 快速排序
-     * @param a
+     *
+     * @param a the a
      * @param low 起始下标
      * @param high 结束下标
+     * @author : ligangwei / 2018-12-29
      */
     public static void quickSort(int[] a, int low, int high){
         int start = low;

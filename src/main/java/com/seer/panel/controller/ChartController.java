@@ -25,17 +25,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @autheor ligw
- * @date 2018/8/23 19:32
+ * 生产线看板图表API
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
  */
 @Api(tags = "生产线看板图表")
 @RestController
 @RequestMapping("/chart")
 public class ChartController extends BaseController {
 
+  /**
+   * Chart service
+   */
   @Autowired
   private ChartService chartService;
 
+  /**
+   * Get factory product line response result.
+   *
+   * @return the response result
+   * @throws GlobalErrorInfoException the global error info exception
+   * @author : ligangwei / 2018-12-29
+   */
   @ApiOperation("工厂产线信息")
   @RequestMapping(value = "/factoryProductLine", method = RequestMethod.POST)
   public ResponseResult<List<FactoryProductLine>> getFactoryProductLine() throws GlobalErrorInfoException {
@@ -50,6 +61,14 @@ public class ChartController extends BaseController {
     }
   }
 
+  /**
+   * Get machine product report response result.
+   *
+   * @param productLine the product line
+   * @return the response result
+   * @throws GlobalErrorInfoException the global error info exception
+   * @author : ligangwei / 2018-12-29
+   */
   @ApiOperation("一周内机床稼动时长排行 生产数")
   @RequestMapping(value = "/machineProductReport", method = RequestMethod.POST)
   public ResponseResult<EchartBarOrLineVO> getMachineProductReport(
@@ -66,6 +85,14 @@ public class ChartController extends BaseController {
     }
   }
 
+  /**
+   * Get product line machine status report response result.
+   *
+   * @param productLine the product line
+   * @return the response result
+   * @throws GlobalErrorInfoException the global error info exception
+   * @author : ligangwei / 2018-12-29
+   */
   @ApiOperation("机器实时状态")
   @RequestMapping(value = "/productLineMachineStatusReport", method = RequestMethod.POST)
   public ResponseResult<ProductLineMachineStatusReport> getProductLineMachineStatusReport(
@@ -82,6 +109,14 @@ public class ChartController extends BaseController {
     }
   }
 
+  /**
+   * Get product line knife lifeency count response result.
+   *
+   * @param productLine the product line
+   * @return the response result
+   * @throws GlobalErrorInfoException the global error info exception
+   * @author : ligangwei / 2018-12-29
+   */
   @ApiOperation("刀具寿命统计")
   @RequestMapping(value = "/productLineKnifeLifeencyCount", method = RequestMethod.POST)
   public ResponseResult<EchartPieVO> getProductLineKnifeLifeencyCount(
@@ -97,6 +132,14 @@ public class ChartController extends BaseController {
     }
   }
 
+  /**
+   * Get product line alarm report response result.
+   *
+   * @param productLine the product line
+   * @return the response result
+   * @throws GlobalErrorInfoException the global error info exception
+   * @author : ligangwei / 2018-12-29
+   */
   @ApiOperation("生产线报警(15min内)")
   @RequestMapping(value = "/productLineAlarmReport", method = RequestMethod.POST)
   public ResponseResult<List<ProductLineAlarmReport>> getProductLineAlarmReport(
@@ -113,6 +156,14 @@ public class ChartController extends BaseController {
     }
   }
 
+  /**
+   * Get machine lifency warning report response result.
+   *
+   * @param productLine the product line
+   * @return the response result
+   * @throws GlobalErrorInfoException the global error info exception
+   * @author : ligangwei / 2018-12-29
+   */
   @ApiOperation(" 刀具寿命报警")
   @RequestMapping(value = "/machineLifencyWarningReport", method = RequestMethod.POST)
   public ResponseResult<EchartBarOrLineVO> getMachineLifencyWarningReport(
@@ -129,6 +180,14 @@ public class ChartController extends BaseController {
     }
   }
 
+  /**
+   * Get knife broken report by diameter response result.
+   *
+   * @param productLine the product line
+   * @return the response result
+   * @throws GlobalErrorInfoException the global error info exception
+   * @author : ligangwei / 2018-12-29
+   */
   @ApiOperation("一周内断刀频率统计(按刀径)")
   @RequestMapping(value = "/knifeBrokenReportByDiameter", method = RequestMethod.POST)
   public ResponseResult<EchartBarOrLineVO> getKnifeBrokenReportByDiameter(
@@ -145,6 +204,14 @@ public class ChartController extends BaseController {
     }
   }
 
+  /**
+   * Get knife broken report by position response result.
+   *
+   * @param productLine the product line
+   * @return the response result
+   * @throws GlobalErrorInfoException the global error info exception
+   * @author : ligangwei / 2018-12-29
+   */
   @ApiOperation("一周内断刀频率统计(按刀位)")
   @RequestMapping(value = "/knifeBrokenReportByPosition", method = RequestMethod.POST)
   public ResponseResult<EchartRadarVO> getKnifeBrokenReportByPosition(
@@ -161,6 +228,14 @@ public class ChartController extends BaseController {
     }
   }
 
+  /**
+   * Get prod line prod report response result.
+   *
+   * @param productLine the product line
+   * @return the response result
+   * @throws GlobalErrorInfoException the global error info exception
+   * @author : ligangwei / 2018-12-29
+   */
   @ApiOperation("当日生产线生产统计")
   @RequestMapping(value = "/prodLineProdReport", method = RequestMethod.POST)
   public ResponseResult<ProdLineProdReport> getProdLineProdReport(
@@ -176,6 +251,14 @@ public class ChartController extends BaseController {
     }
   }
 
+  /**
+   * Get production director response result.
+   *
+   * @param productLine the product line
+   * @return the response result
+   * @throws GlobalErrorInfoException the global error info exception
+   * @author : ligangwei / 2018-12-29
+   */
   @ApiOperation("生产负责人")
   @RequestMapping(value = "/productionDirector", method = RequestMethod.POST)
   public ResponseResult<ProductionDirectorVO> getProductionDirector(

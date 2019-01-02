@@ -14,6 +14,11 @@ import java.util.concurrent.TimeUnit;
 import static com.seer.panel.util.http.okhttp.OKHttpConfig.*;
 import static com.seer.panel.util.http.okhttp.interceptor.LoggingInterceptor.Level.NONE;
 
+/**
+ * OKhttp 请求体
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
+ */
 public enum OKHttpFactory {
     INSTANCE();
 

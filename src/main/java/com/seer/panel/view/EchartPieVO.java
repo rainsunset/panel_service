@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @autheor ligw
- * @date 2018/9/1 10:55
+ * Ecahrt 饼图 对应Model
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
+ * @date 2018 /9/1 10:55
  */
 @ApiModel(description = "Ecahrt 饼图 对应Model")
 public class EchartPieVO implements Serializable {

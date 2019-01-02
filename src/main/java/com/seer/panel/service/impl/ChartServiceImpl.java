@@ -35,15 +35,24 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * 生产线看板 - 服务实现
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
  * @autheor ligw
- * @date 2018/8/23 21:11
+ * @date 2018 /8/23 21:11
  */
 @Service
 public class ChartServiceImpl extends BaseService implements ChartService {
 
+	/**
+	 * Chart mapper
+	 */
 	@Autowired
 	private ChartMapper chartMapper;
 
+	/**
+	 * Mes info mapper
+	 */
 	@Autowired
 	private MesInfoMapper mesInfoMapper;
 
@@ -62,7 +71,6 @@ public class ChartServiceImpl extends BaseService implements ChartService {
 	@Override
 	public EchartBarOrLineVO getMachineProductReport(ProductLineDTO productLine) throws Exception {
 		List<MachineProductReport> machineProductReportList = null;
-		System.out.println(DataSourceContextHolder.getDbType());
 		try {
 			machineProductReportList = chartMapper.getMachineProductReport(productLine);
 		} catch (Exception e) {

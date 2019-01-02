@@ -12,75 +12,100 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 /**
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
  * @autheor ligw
- * @date 2018/8/23 20:20
+ * @date 2018 /8/23 20:20
  */
 @Repository
 public interface ChartMapper {
 
-  /**
-   * 工厂产线信息
-   * @return
-   */
-  List<FactoryProductLine> getFactoryProductLine();
+	/**
+	 * 工厂产线信息
+	 *
+	 * @return list
+	 * @author : ligangwei / 2018-12-29
+	 */
+	List<FactoryProductLine> getFactoryProductLine();
 
-  /**
-   * 机床稼动率排行 生产数
-   * @param productLine
-   * @return
-   */
-  public List<MachineProductReport> getMachineProductReport(ProductLineDTO productLine) throws Exception;
+	/**
+	 * 机床稼动率排行 生产数
+	 *
+	 * @param productLine the product line
+	 * @return list
+	 * @throws Exception the exception
+	 * @author : ligangwei / 2018-12-29
+	 */
+	public List<MachineProductReport> getMachineProductReport(ProductLineDTO productLine) throws Exception;
 
-  /**
-   * 机器实时状态
-   * @param productLine
-   * @return
-   */
-  public List<List<?>> getProductLineMachineStatusReport(ProductLineDTO productLine) throws Exception;
+	/**
+	 * 机器实时状态
+	 *
+	 * @param productLine the product line
+	 * @return list
+	 * @throws Exception the exception
+	 * @author : ligangwei / 2018-12-29
+	 */
+	public List<List<?>> getProductLineMachineStatusReport(ProductLineDTO productLine) throws Exception;
 
-  /**
-   * 刀具寿命统计
-   * @param productLine
-   * @return
-   * @throws Exception
-   */
-  public ProductLineKnifeLifeencyCount getProductLineKnifeLifeencyCount(ProductLineDTO productLine) throws Exception;
+	/**
+	 * 刀具寿命统计
+	 *
+	 * @param productLine the product line
+	 * @return product line knife lifeency count
+	 * @throws Exception the exception
+	 * @author : ligangwei / 2018-12-29
+	 */
+	public ProductLineKnifeLifeencyCount getProductLineKnifeLifeencyCount(ProductLineDTO productLine) throws Exception;
 
-  /**
-   * 生产线报警
-   * @param productLine
-   * @return
-   */
-  public List<ProductLineAlarmReport> getProductLineAlarmReport(ProductLineDTO productLine) throws Exception;
+	/**
+	 * 生产线报警
+	 *
+	 * @param productLine the product line
+	 * @return list
+	 * @throws Exception the exception
+	 * @author : ligangwei / 2018-12-29
+	 */
+	public List<ProductLineAlarmReport> getProductLineAlarmReport(ProductLineDTO productLine) throws Exception;
 
-  /**
-   * 刀具寿命报警
-   * @param productLine
-   * @return
-   */
-  public List<KnifeLifencyWarningReport> getKnifeLifencyWarningReport(ProductLineDTO productLine) throws Exception;
+	/**
+	 * 刀具寿命报警
+	 *
+	 * @param productLine the product line
+	 * @return list
+	 * @throws Exception the exception
+	 * @author : ligangwei / 2018-12-29
+	 */
+	public List<KnifeLifencyWarningReport> getKnifeLifencyWarningReport(ProductLineDTO productLine) throws Exception;
 
-  /**
-   * 断刀频率统计(按刀径)
-   * @param productLine
-   * @return
-   */
-  public List<KnifeBrokenReportByDiameter> getKnifeBrokenReportByDiameter (ProductLineDTO productLine) throws Exception;
+	/**
+	 * 断刀频率统计(按刀径)
+	 *
+	 * @param productLine the product line
+	 * @return list
+	 * @throws Exception the exception
+	 * @author : ligangwei / 2018-12-29
+	 */
+	public List<KnifeBrokenReportByDiameter> getKnifeBrokenReportByDiameter (ProductLineDTO productLine) throws Exception;
 
 	/**
 	 * 断刀频率统计(按刀位)
-	 * @param productLine
-	 * @return
-	 * @throws Exception
+	 *
+	 * @param productLine the product line
+	 * @return list
+	 * @throws Exception the exception
+	 * @author : ligangwei / 2018-12-29
 	 */
-  public List<KnifeBrokenReportByPosition> getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception;
+	public List<KnifeBrokenReportByPosition> getKnifeBrokenReportByPosition(ProductLineDTO productLine) throws Exception;
 
-  /**
-   * 生产线生产统计
-   * @param productLineDTO
-   * @return
-   * @throws Exception
-   */
-  public Integer getProdLineProdReport(ProductLineDTO productLineDTO)throws Exception;
+	/**
+	 * 生产线生产统计
+	 *
+	 * @param productLineDTO the product line dto
+	 * @return integer
+	 * @throws Exception the exception
+	 * @author : ligangwei / 2018-12-29
+	 */
+	public Integer getProdLineProdReport(ProductLineDTO productLineDTO)throws Exception;
 
 }

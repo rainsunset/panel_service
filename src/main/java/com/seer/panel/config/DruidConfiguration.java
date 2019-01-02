@@ -8,18 +8,27 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @autheor ligw
- * @date 2018/9/1 15:51
+ * alibaba 数据库连接池监控配置
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
  */
 @Configuration
 public class DruidConfiguration {
+
+	/**
+	 * Start view servlet servlet registration bean.
+	 *
+	 * @return the servlet registration bean
+	 * @author : ligangwei / 2018-12-29
+	 */
 	@Bean
 	public ServletRegistrationBean startViewServlet(){
+		// 监控查看地址 http://ip：port/projectName/druid/index.html
 		ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(),"/druid/*");
 		// IP白名单
 		servletRegistrationBean.addInitParameter("allow","127.0.0.1");
 		// IP黑名单(共同存在时，deny优先于allow)
-//		servletRegistrationBean.addInitParameter("deny","127.0.0.1");
+		// servletRegistrationBean.addInitParameter("deny","127.0.0.1");
 		//控制台管理用户
 		servletRegistrationBean.addInitParameter("loginUsername","admin");
 		servletRegistrationBean.addInitParameter("loginPassword","123456");
@@ -28,6 +37,12 @@ public class DruidConfiguration {
 		return servletRegistrationBean;
 	}
 
+	/**
+	 * Stat filter filter registration bean.
+	 *
+	 * @return the filter registration bean
+	 * @author : ligangwei / 2018-12-29
+	 */
 	@Bean
 	public FilterRegistrationBean statFilter(){
 		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());

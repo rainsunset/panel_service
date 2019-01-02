@@ -1,9 +1,12 @@
 package com.seer.panel.config.db;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+
 /**
- * @autheor ligw
- * @date 2018/9/1 13:57
+ * 多数据源 - 数据源路由
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
+ * @date 2018 /9/1 13:57
  */
 
 public class DynamicDataSource extends AbstractRoutingDataSource {

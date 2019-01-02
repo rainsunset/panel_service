@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @autheor ligw
- * @date 2018/9/1 12:39
+ * Ecahrt 热力图 对应Model
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
+ * @date 2018 /9/1 12:39
  */
 @ApiModel(description = "Ecahrt 热力图 对应Model")
 public class EchartHeatmapVO implements Serializable {

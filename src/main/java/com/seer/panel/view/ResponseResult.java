@@ -10,7 +10,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * @author ligw
+ * 标准接口返回对象
+ * @param <T> the type parameter
+ * @author ligw : ligangwei / ligangwei@seerbigdata.com
  * @version $Id ResponseResult.java, v 0.1 2018-08-22 1:16 ligw Exp $$
  */
 @ApiModel(description = "标准接口返回对象")

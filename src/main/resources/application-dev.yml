@@ -6,9 +6,9 @@ spring:
   datasource:
       druid:
           db1:
-              url: jdbc:sqlserver://172.20.185.220:1433;DatabaseName=seerbigdata2
-              username: seer_write
-              password : seerwrite@123
+              url: jdbc:sqlserver://172.20.170.99:1433;DatabaseName=seerbigdata
+              username: sa
+              password : sa123
           db2:
               url: jdbc:oracle:thin:@172.20.170.20:1521/jsutf
               username: unimax

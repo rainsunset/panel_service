@@ -7,10 +7,11 @@ import java.util.List;
 
 /**
  * Ecahrt 柱状图或折线图对应Model
- * @autheor ligw
- * @date 2018/9/1 10:31
+ *
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
+ * @date 2018 /9/1 10:31
  */
-
 @ApiModel(description = "Ecahrt 柱状图或折线图对应Model")
 public class EchartBarOrLineVO implements Serializable {
 

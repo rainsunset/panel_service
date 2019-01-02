@@ -8,7 +8,8 @@ import com.seer.panel.exception.ErrorInfoInterface;
 import com.seer.panel.exception.GlobalErrorInfoEnum;
 
 /**
- * @author ligw
+ * 标准接口返回对象 构造方法
+ * @author ligw : ligangwei / ligangwei@seerbigdata.com
  * @version $Id RestResultGenerator.java, v 0.1 2018-08-22 1:15 ligw Exp $$
  */
 public class RestResultGenerator {

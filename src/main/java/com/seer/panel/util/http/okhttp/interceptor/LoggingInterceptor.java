@@ -10,6 +10,11 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * OKHttp拦截器
+ * @author : ligangwei / ligangwei@seerbigdata.com
+ * @version : 1.0
+ */
 public final class LoggingInterceptor implements Interceptor {
     private static final Charset UTF8 = Charset.forName("UTF-8");
 
